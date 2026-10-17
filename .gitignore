@@ -1,0 +1,30 @@
+# Dependencies (this site has none, but keep this in case you add a build later)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment / secrets — never commit these
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Cloudflare
+.wrangler/
+.dev.vars
+
+# Local tooling
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# Logs
+*.log
+npm-debug.log*
+logs/

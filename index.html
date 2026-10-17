@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurora Mini-Hotel &mdash; Boutique hotel in Zaporizhzhia</title>
+<meta name="description" content="Boutique mini-hotel in Zaporizhzhia. Five comfortable rooms, private bathroom, fast Wi-Fi, free parking and a wood-fired steam room.">
+<meta name="theme-color" content="#071a22">
+<meta name="color-scheme" content="dark light">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Aurora">
+<meta property="og:title" content="Aurora Mini-Hotel &mdash; Boutique hotel in Zaporizhzhia">
+<meta property="og:description" content="Boutique mini-hotel in Zaporizhzhia.">
+<meta property="og:image" content="assets/img/og-cover.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+
+<script>
+/* Set theme + language before first paint (no flash of wrong theme) */
+(function () {
+  try {
+    var t = localStorage.getItem('aurora:theme');
+    if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    var l = localStorage.getItem('aurora:lang');
+    if (l) document.documentElement.setAttribute('lang', l);
+  } catch (e) {}
+})();
+</script>
+</head>
+
+<body id="top">
+
+<a class="skiplink" href="#main" data-i18n="a11y.skip">Skip to content</a>
+
+<!-- ============================== HEADER ============================== -->
+<header class="hdr" id="hdr">
+  <div class="container hdr__in">
+
+    <a class="brand" href="#top">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M16 3l3.6 7.7 8.4 1-6.2 5.8 1.6 8.3L16 21.8 8.6 25.8l1.6-8.3L4 11.7l8.4-1L16 3z" fill="currentColor"/><circle cx="16" cy="27.5" r="1.6" fill="currentColor" opacity=".5"/></svg>
+      </span>
+      <span class="brand__txt">
+        <span class="brand__name" data-i18n="brand.name">AURORA</span>
+        <span class="brand__sub" data-i18n="brand.sub">mini-hotel</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Main">
+      <a href="#rooms" data-i18n="nav.rooms">Rooms</a>
+      <a href="#amenities" data-i18n="nav.amenities">Amenities</a>
+      <a href="#offers" data-i18n="nav.offers">Offers</a>
+      <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
+      <a href="#contacts" data-i18n="nav.contacts">Contacts</a>
+    </nav>
+
+    <div class="hdr__right">
+      <a class="hdr__tel" href="tel:+38067000000">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.6a1 1 0 01-.25 1l-2.2 2.2z" fill="currentColor"/></svg>
+        <span><b data-i18n="header.phone1">+38 067 000 00 00</b><i data-i18n="header.phone2">+38 050 000 00 00</i></span>
+      </a>
+
+      <!-- LANGUAGE DROPDOWN -->
+      <div class="lang" id="lang">
+        <button class="lang__btn" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <span class="flag" data-flag></span>
+          <span class="lang__cur" data-i18n="lang.code">EN</span>
+          <svg class="lang__chev" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <ul class="lang__menu" role="listbox" tabindex="-1">
+          <li><button type="button" role="option" data-set-lang="en"><span class="flag" data-flag="en"></span><span>English</span></button></li>
+          <li><button type="button" role="option" data-set-lang="ru"><span class="flag" data-flag="ru"></span><span>&#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;</span></button></li>
+          <li><button type="button" role="option" data-set-lang="uk"><span class="flag" data-flag="uk"></span><span>&#1059;&#1082;&#1088;&#1072;&#1103;&#1085;&#1089;&#1100;&#1082;&#1072;</span></button></li>
+        </ul>
+      </div>
+
+      <button class="icon-btn theme-btn" type="button" data-theme-toggle aria-label="Toggle theme">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M12 2.6v2.3M12 19.1v2.3M21.4 12h-2.3M4.9 12H2.6M18.6 5.4l-1.6 1.6M7 17l-1.6 1.6M18.6 18.6L17 17M7 7L5.4 5.4"/></g></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.6A8.6 8.6 0 019.4 3.5a8.6 8.6 0 1011.1 11.1z" fill="currentColor"/></svg>
+      </button>
+
+      <button class="icon-btn burger" type="button" data-nav-toggle aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="hdr__progress" aria-hidden="true"><i></i></div>
+</header>
+
+<main id="main">
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <img src="assets/img/hero/hero.jpg" alt="" data-ph="ph.hero:Hero background" loading="eager">
+      <div class="hero__veil"></div>
+    </div>
+
+    <div class="container hero__in">
+      <div class="hero__left">
+        <span class="pills"><i></i><span data-i18n="hero.badge">Boutique mini-hotel &middot; Zaporizhzhia</span></span>
+        <h1 class="hero__title" data-i18n="hero.title">A mini-hotel in Zaporizhzhia</h1>
+        <p class="hero__sub" data-i18n="hero.kicker">5 comfortable rooms</p>
+        <ul class="hero__list">
+          <li data-i18n="hero.i1">We&rsquo;ll find a room that fits your budget</li>
+          <li data-i18n="hero.i2">Business travellers &mdash; full document package</li>
+          <li data-i18n="hero.i3">Breakfast and coffee included</li>
+          <li data-i18n="hero.i4">Free secured parking</li>
+          <li data-i18n="hero.i5">Wood-fired steam room + steam generator</li>
+        </ul>
+        <div class="hero__stats">
+          <div><b data-count="4.8" data-dec="1">0</b><span data-i18n="hero.stat1">guest rating</span></div>
+          <div><b data-count="1200" data-suffix="+">0</b><span data-i18n="hero.stat2">happy guests</span></div>
+          <div><b data-count="3">0</b><span data-i18n="hero.stat3">min to the centre</span></div>
+        </div>
+      </div>
+
+      <aside class="hero__card">
+        <div class="hero__cardglow" aria-hidden="true"></div>
+        <h2 data-i18n="hero.cardTitle">Book a room</h2>
+        <p data-i18n="hero.cardText">Leave your details and the manager will call you back within 15 minutes.</p>
+        <button class="btn btn--primary" type="button" data-open-modal="hero" data-i18n="hero.btnBook">Book a room</button>
+        <button class="btn btn--ghost" type="button" data-open-modal="learn" data-i18n="hero.btnLearn">Learn more</button>
+        <ul class="hero__cardmeta">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.1 7-11a7 7 0 10-14 0c0 5.9 7 11 7 11z" fill="currentColor"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="var(--bg-2)" stroke-width="1.8"/></svg><span data-i18n="hero.meta1">3 km from the railway station</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.8" rx="2"/><path d="M9 7V5.5A1.5 1.5 0 0110.5 4h3A1.5 1.5 0 0115 5.5V7" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span data-i18n="hero.meta2">24/7 reception</span></li>
+        </ul>
+      </aside>
+    </div>
+
+    <a class="hero__scroll" href="#rooms">
+      <span data-i18n="hero.scroll">Scroll</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m0 0l-6-6m6 6l6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </section>
+
+  <!-- ============================== ROOMS ============================== -->
+  <section class="section rooms" id="rooms">
+    <div class="container">
+      <header class="sec-head">
+        <span class="sec-head__label" data-i18n="rooms.label">Accommodation</span>
+        <h2 class="sec-title" data-i18n="rooms.title">Choose your room</h2>
+        <p class="sec-lead" data-i18n="rooms.lead">Every room is private, freshly cleaned and ready on arrival. The price depends on the category and the length of the stay.</p>
+      </header>
+
+      <div class="tabs" data-tabs>
+        <div class="tabs__bar" role="tablist" aria-label="Rooms">
+          <button class="tab is-active" role="tab" aria-selected="true" data-tab="0"><b>01</b><span data-i18n="rooms.n1">Double 1</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="1"><b>02</b><span data-i18n="rooms.n2">Double 2</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="2"><b>03</b><span data-i18n="rooms.n3">Economy twin</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="3"><b>04</b><span data-i18n="rooms.n4">Semi-deluxe</span></button>
+        </div>
+
+        <!-- 01 -->
+        <div class="tabs__panel is-active" role="tabpanel" data-panel="0">
+          <div class="room">
+            <div class="room__media">
+              <div class="slider" data-slider>
+                <div class="slider__track">
+                  <figure class="media ratio-4x3" data-ph="ph.room1:Double 1 photo"><img src="assets/img/rooms/double-1/1.jpg" alt="Double room 1 photo 1" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room1:Double 1 photo"><img src="assets/img/rooms/double-1/2.jpg" alt="Double room 1 photo 2" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room1:Double 1 photo"><img src="assets/img/rooms/double-1/3.jpg" alt="Double room 1 photo 3" loading="lazy"></figure>
+                </div>
+                <button class="slider__nav slider__nav--prev" type="button" data-slider-prev aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="slider__nav slider__nav--next" type="button" data-slider-next aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <div class="slider__dots" data-slider-dots></div>
+                <span class="slider__count"><b data-slider-cur>1</b>/<span data-slider-total>3</span></span>
+              </div>
+            </div>
+            <div class="room__info">
+              <h3 data-i18n="rooms.n1">Double 1</h3>
+              <p data-i18n="rooms.d1">A double room with one bed and its own bathroom. A quiet, sunny side of the house &mdash; perfect for a short city break.</p>
+              <div class="room__meta">
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-7h18v7M3 11V8m18 3V8M3 18v2m18-2v2M6 11v7m4-7v7m4-7v7m4-7v7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><b data-i18n="rooms.area">25 m&sup2;</b></span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-8h13a4 4 0 014 4v4H3zM3 18v2m17-2v2M7 10V7h5v3" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-i18n="rooms.guests">2 guests</b></span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg><b data-i18n="rooms.floor">2nd floor</b></span>
+              </div>
+              <ul class="chips">
+                <li data-i18n="am.shower">Shower</li><li data-i18n="am.bed">Bed</li><li data-i18n="am.wifi">Wi-Fi</li><li data-i18n="am.safe">Safe</li><li data-i18n="am.tv">TV</li><li data-i18n="am.ac">Air conditioning</li>
+              </ul>
+              <div class="room__foot">
+                <div class="price"><span data-i18n="rooms.from">from</span><b data-i18n="rooms.price">$24</b><i data-i18n="rooms.perNight">/ night</i></div>
+                <button class="btn btn--primary" type="button" data-open-modal="room" data-i18n="rooms.cta">Get the price</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 -->
+        <div class="tabs__panel" role="tabpanel" data-panel="1" hidden>
+          <div class="room">
+            <div class="room__media">
+              <div class="slider" data-slider>
+                <div class="slider__track">
+                  <figure class="media ratio-4x3" data-ph="ph.room2:Double 2 photo"><img src="assets/img/rooms/double-2/1.jpg" alt="Double room 2 photo 1" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room2:Double 2 photo"><img src="assets/img/rooms/double-2/2.jpg" alt="Double room 2 photo 2" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room2:Double 2 photo"><img src="assets/img/rooms/double-2/3.jpg" alt="Double room 2 photo 3" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room2:Double 2 photo"><img src="assets/img/rooms/double-2/4.jpg" alt="Double room 2 photo 4" loading="lazy"></figure>
+                </div>
+                <button class="slider__nav slider__nav--prev" type="button" data-slider-prev aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="slider__nav slider__nav--next" type="button" data-slider-next aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <div class="slider__dots" data-slider-dots></div>
+                <span class="slider__count"><b data-slider-cur>1</b>/<span data-slider-total>4</span></span>
+              </div>
+            </div>
+            <div class="room__info">
+              <h3 data-i18n="rooms.n2">Double 2</h3>
+              <p data-i18n="rooms.d2">A renovated double with a king-size bed, a work desk and a balcony facing the courtyard. Blackout curtains and a quiet air conditioner.</p>
+              <div class="room__meta">
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-7h18v7M3 11V8m18 3V8M3 18v2m18-2v2M6 11v7m4-7v7m4-7v7m4-7v7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><b data-i18n="rooms.area2">28 m&sup2;</b></span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-8h13a4 4 0 014 4v4H3zM3 18v2m17-2v2M7 10V7h5v3" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-i18n="rooms.guests">2 guests</b></span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg><b data-i18n="rooms.floor3">3rd floor</b></span>
+              </div>
+              <ul class="chips">
+                <li data-i18n="am.shower">Shower</li><li data-i18n="am.bed">Bed</li><li data-i18n="am.wifi">Wi-Fi</li><li data-i18n="am.safe">Safe</li><li data-i18n="am.tv">TV</li><li data-i18n="am.ac">Air conditioning</li><li data-i18n="am.kettle">Kettle</li>
+              </ul>
+              <div class="room__foot">
+                <div class="price"><span data-i18n="rooms.from">from</span><b data-i18n="rooms.price2">$29</b><i data-i18n="rooms.perNight">/ night</i></div>
+                <button class="btn btn--primary" type="button" data-open-modal="room" data-i18n="rooms.cta">Get the price</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 -->
+        <div class="tabs__panel" role="tabpanel" data-panel="2" hidden>
+          <div class="room">
+            <div class="room__media">
+              <div class="slider" data-slider>
+                <div class="slider__track">
+                  <figure class="media ratio-4x3" data-ph="ph.room3:Economy photo"><img src="assets/img/rooms/economy/1.jpg" alt="Economy twin room photo 1" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room3:Economy photo"><img src="assets/img/rooms/economy/2.jpg" alt="Economy twin room photo 2" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room3:Economy photo"><img src="assets/img/rooms/economy/3.jpg" alt="Economy twin room photo 3" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room3:Economy photo"><img src="assets/img/rooms/economy/4.jpg" alt="Economy twin room photo 4" loading="lazy"></figure>
+                </div>
+                <button class="slider__nav slider__nav--prev" type="button" data-slider-prev aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="slider__nav slider__nav--next" type="button" data-slider-next aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <div class="slider__dots" data-slider-dots></div>
+                <span class="slider__count"><b data-slider-cur>1</b>/<span data-slider-total>4</span></span>
+              </div>
+            </div>
+            <div class="room__info">
+              <h3 data-i18n="rooms.n3">Economy twin</h3>
+              <p data-i18n="rooms.d3">Two separate beds and everything you need for an overnight stay, plus a small wardrobe. The best price per guest in the hotel.</p>
+              <div class="room__meta">
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-7h18v7M3 11V8m18 3V8M3 18v2m18-2v2M6 11v7m4-7v7m4-7v7m4-7v7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><b data-i18n="rooms.area3">18 m&sup2;</b></span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-8h13a4 4 0 014 4v4H3zM3 18v2m17-2v2M7 10V7h5v3" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-i18n="rooms.guests2">2 guests</b></span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg><b data-i18n="rooms.floor1">1st floor</b></span>
+              </div>
+              <ul class="chips">
+                <li data-i18n="am.shower">Shower</li><li data-i18n="am.bed">Bed</li><li data-i18n="am.wifi">Wi-Fi</li><li data-i18n="am.safe">Safe</li><li data-i18n="am.tv">TV</li>
+              </ul>
+              <div class="room__foot">
+                <div class="price"><span data-i18n="rooms.from">from</span><b data-i18n="rooms.price3">$19</b><i data-i18n="rooms.perNight">/ night</i></div>
+                <button class="btn btn--primary" type="button" data-open-modal="room" data-i18n="rooms.cta">Get the price</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 -->
+        <div class="tabs__panel" role="tabpanel" data-panel="3" hidden>
+          <div class="room">
+            <div class="room__media">
+              <div class="slider" data-slider>
+                <div class="slider__track">
+                  <figure class="media ratio-4x3" data-ph="ph.room4:Semi-deluxe photo"><img src="assets/img/rooms/semi-deluxe/1.jpg" alt="Semi-deluxe room photo 1" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room4:Semi-deluxe photo"><img src="assets/img/rooms/semi-deluxe/2.jpg" alt="Semi-deluxe room photo 2" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room4:Semi-deluxe photo"><img src="assets/img/rooms/semi-deluxe/3.jpg" alt="Semi-deluxe room photo 3" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room4:Semi-deluxe photo"><img src="assets/img/rooms/semi-deluxe/4.jpg" alt="Semi-deluxe room photo 4" loading="lazy"></figure>
+                  <figure class="media ratio-4x3" data-ph="ph.room4:Semi-deluxe photo"><img src="assets/img/rooms/semi-deluxe/5.jpg" alt="Semi-deluxe room photo 5" loading="lazy"></figure>
+                </div>
+                <button class="slider__nav slider__nav--prev" type="button" data-slider-prev aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <button class="slider__nav slider__nav--next" type="button" data-slider-next aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                <div class="slider__dots" data-slider-dots></div>
+                <span class="slider__count"><b data-slider-cur>1</b>/<span data-slider-total>5</span></span>
+              </div>
+            </div>
+            <div class="room__info">
+              <h3 data-i18n="rooms.n4">Semi-deluxe</h3>
+              <p data-i18n="rooms.d4">The largest room in the hotel: a king bed, a living corner, a wide bathroom and a view of the city. Extra bedding on request.</p>
+              <div class="room__meta">
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-7h18v7M3 11V8m18 3V8M3 18v2m18-2v2M6 11v7m4-7v7m4-7v7m4-7v7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg><b data-i18n="rooms.area4">40 m&sup2;</b></span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18v-8h13a4 4 0 014 4v4H3zM3 18v2m17-2v2M7 10V7h5v3" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><b data-i18n="rooms.guests3">2&ndash;3 guests</b></span>
+                <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l18-7-7 18-2.5-7.5L3 11z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg><b data-i18n="rooms.floor4">4th floor</b></span>
+              </div>
+              <ul class="chips">
+                <li data-i18n="am.shower">Shower</li><li data-i18n="am.bed">Bed</li><li data-i18n="am.wifi">Wi-Fi</li><li data-i18n="am.safe">Safe</li><li data-i18n="am.tv">TV</li><li data-i18n="am.ac">Air conditioning</li><li data-i18n="am.breakfast">Breakfast</li><li data-i18n="am.sofa">Living corner</li>
+              </ul>
+              <div class="room__foot">
+                <div class="price"><span data-i18n="rooms.from">from</span><b data-i18n="rooms.price4">$39</b><i data-i18n="rooms.perNight">/ night</i></div>
+                <button class="btn btn--primary" type="button" data-open-modal="room" data-i18n="rooms.cta">Get the price</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== AMENITIES ============================== -->
+  <section class="section amenities" id="amenities">
+    <div class="container">
+      <header class="sec-head">
+        <span class="sec-head__label" data-i18n="am.label">Amenities</span>
+        <h2 class="sec-title" data-i18n="am.title">We&rsquo;ll make your stay comfortable in our city</h2>
+      </header>
+
+      <ul class="am-grid">
+        <li class="am" data-reveal><span class="am__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 5v4l3 2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b data-i18n="am.a1">24/7 reception</b></li>
+        <li class="am" data-reveal><span class="am__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16l1.6-5.4A2 2 0 017.5 9h9a2 2 0 011.9 1.6L20 16M4 16h16M6 16v2.5M18 16v2.5M6.5 12.5h11" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b data-i18n="am.a2">Free parking</b></li>
+        <li class="am" data-reveal><span class="am__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20l7-14M13 20l4-8M6 6l1-2M14 6l1-2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="9" cy="18" r="2" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></span><b data-i18n="am.a3">Cleanliness</b></li>
+        <li class="am" data-reveal><span class="am__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9a13 13 0 0119 0M6 12.5a8 8 0 0112 0M9.5 16a3.4 3.4 0 015 0" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="12" cy="19.5" r="1.3" fill="currentColor"/></svg></span><b data-i18n="am.a4">Wi-Fi</b></li>
+        <li class="am" data-reveal><span class="am__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M9 6v12M15 6v12" stroke="currentColor" stroke-width="1.8"/></svg></span><b data-i18n="am.a5">Cable TV</b></li>
+        <li class="am" data-reveal><span class="am__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3s6 6.4 6 10.2A6 6 0 016 13.2C6 9.4 12 3 12 3z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg></span><b data-i18n="am.a6">Drinking water</b></li>
+        <li class="am" data-reveal><span class="am__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5" stroke="currentColor" stroke-width="1.8" fill="none"/><path d="M9 8h6M9 12h6M9 16h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><b data-i18n="am.a7">Fridge &amp; microwave</b></li>
+        <li class="am" data-reveal><span class="am__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h13v7a3 3 0 01-3 3H7a3 3 0 01-3-3V9zm13 3h2a2.5 2.5 0 002.5-2.5V8H17" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/><path d="M7 4c0-1 1-1.4 1-2M11 4c0-1 1-1.4 1-2" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg></span><b data-i18n="am.a8">Coffee &amp; tea</b></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================== PROMO / FORM ============================== -->
+  <section class="promo">
+    <div class="promo__bg" aria-hidden="true">
+      <img src="assets/img/promo/promo-bg.jpg" alt="" data-ph="ph.promo:Promo background" loading="lazy">
+      <div class="promo__veil"></div>
+    </div>
+    <div class="container">
+      <div class="promo__card" data-reveal>
+        <div class="promo__art" aria-hidden="true">
+          <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" stroke="currentColor" stroke-width="1.5" fill="none" opacity=".5"/><circle cx="60" cy="60" r="40" stroke="currentColor" stroke-width="1.5" fill="none" opacity=".35"/><path d="M60 22l9.6 19.8L92 45l-16.3 15.8 3.9 22.3L60 73.4 40.4 83.1l3.9-22.3L28 45l22.4-3.2L60 22z" fill="currentColor" opacity=".85"/></svg>
+        </div>
+        <div class="promo__body">
+          <h2 data-i18n="promo.title">Book for more than 2 nights</h2>
+          <p class="promo__sub"><b data-i18n="promo.sub">and save 10%</b> <span data-i18n="promo.sub2">of your stay</span></p>
+          <form class="lead-form" data-lead-form="Promo - 2+ nights" novalidate>
+            <div class="field">
+              <input type="text" id="pf-name" name="name" autocomplete="name" placeholder=" " required>
+              <label for="pf-name" data-i18n="form.name">Your name</label>
+            </div>
+            <div class="field">
+              <input type="tel" id="pf-phone" name="phone" autocomplete="tel" placeholder=" " required>
+              <label for="pf-phone" data-i18n="form.phone">Your phone</label>
+            </div>
+            <button class="btn btn--primary" type="submit" data-i18n="form.submit">Send</button>
+            <p class="lead-form__note" data-i18n="form.note">We&rsquo;ll call you back within 15 minutes and never share your number.</p>
+          </form>
+          <p class="lead-form__ok" hidden data-lead-ok>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span data-i18n="form.ok">Thanks! Your request has been sent &mdash; we&rsquo;ll be in touch shortly.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== AWARDS ============================== -->
+  <section class="section awards" id="awards">
+    <div class="container">
+      <div class="awards__in">
+        <header class="sec-head sec-head--left">
+          <span class="sec-head__label" data-i18n="aw.label">Recognition</span>
+          <h2 class="sec-title" data-i18n="aw.title">We received an award</h2>
+          <p data-i18n="aw.text">Best hotel by guest reviews 2019. More than 80% of our guests come back and recommend us to their friends &mdash; the strongest measure of reliability and quality in our work.</p>
+          <ul class="aw-stats">
+            <li><b data-count="80" data-suffix="%">0</b><span data-i18n="aw.s1">return guests</span></li>
+            <li><b data-count="4.8" data-dec="1">0</b><span data-i18n="aw.s2">average score</span></li>
+            <li><b data-count="2019">0</b><span data-i18n="aw.s3">award year</span></li>
+          </ul>
+        </header>
+
+        <div class="badge" data-reveal>
+          <div class="badge__ribbon" data-i18n="aw.ribbon">Traveller&rsquo;s Choice</div>
+          <figure class="media badge__ph ratio-1x1" data-ph="ph.badge:Award badge"><img src="assets/img/awards/badge.jpg" alt="Traveller's Choice award" loading="lazy"></figure>
+          <p class="badge__score"><b>8.4</b><span data-i18n="aw.score">Best hotel in the region</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== VIDEO TOUR ============================== -->
+  <section class="section tour">
+    <div class="container">
+      <header class="sec-head">
+        <span class="sec-head__label" data-i18n="tour.label">Video</span>
+        <h2 class="sec-title" data-i18n="tour.title">Take a look around before you arrive</h2>
+        <p class="sec-lead" data-i18n="tour.lead">A short walkthrough of the rooms, the lobby and the steam room. Shot in 4K, about 90 seconds long.</p>
+      </header>
+
+      <div class="video" data-reveal>
+        <figure class="media ratio-16x9" data-ph="ph.video:Video placeholder">
+          <img src="assets/img/tour/poster.jpg" alt="Video tour poster" loading="lazy">
+        </figure>
+        <div class="video__overlay">
+          <button class="play" type="button" data-open-modal="video" aria-label="Play the video tour">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5-11-6.5z" fill="currentColor"/></svg>
+          </button>
+          <p class="video__hint" data-i18n="tour.hint">Video placeholder &middot; add tour.mp4 to assets/video/</p>
+        </div>
+        <span class="video__chip" data-i18n="tour.chip">Video tour &middot; 1:32</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== REVIEWS ============================== -->
+  <section class="section reviews" id="reviews">
+    <div class="container">
+      <header class="sec-head">
+        <span class="sec-head__label" data-i18n="rv.label">Reviews</span>
+        <h2 class="sec-title" data-i18n="rv.title">What our guests say</h2>
+      </header>
+
+      <div class="slider slider--reviews" data-slider>
+        <div class="slider__track">
+          <article class="rev">
+            <div class="rev__stars" data-stars="5" role="img" aria-label="5 out of 5"></div>
+            <h3 data-i18n="rv.r1n">Olena K.</h3>
+            <p data-i18n="rv.r1">Very clean room, hot water and a kettle in the room. We checked in at 2am and the night receptionist met us without any delay.</p>
+            <footer><span data-i18n="rv.src">Source</span><i data-i18n="rv.r1d">March 2025</i></footer>
+          </article>
+          <article class="rev">
+            <div class="rev__stars" data-stars="5" role="img" aria-label="5 out of 5"></div>
+            <h3 data-i18n="rv.r2n">Dmytro V.</h3>
+            <p data-i18n="rv.r2">I stayed three nights on a business trip. They prepared the full document package and issued the invoice without any questions.</p>
+            <footer><span data-i18n="rv.src">Source</span><i data-i18n="rv.r2d">February 2025</i></footer>
+          </article>
+          <article class="rev">
+            <div class="rev__stars" data-stars="4" role="img" aria-label="4 out of 5"></div>
+            <h3 data-i18n="rv.r3n">Iryna M.</h3>
+            <p data-i18n="rv.r3">The steam room is the real highlight. We also used the free parking &mdash; the car stayed in a lit yard the whole time.</p>
+            <footer><span data-i18n="rv.src">Source</span><i data-i18n="rv.r3d">January 2025</i></footer>
+          </article>
+          <article class="rev">
+            <div class="rev__stars" data-stars="5" role="img" aria-label="5 out of 5"></div>
+            <h3 data-i18n="rv.r4n">Serhii L.</h3>
+            <p data-i18n="rv.r4">Great location, three minutes on foot to the main avenue. The breakfast and the lobby coffee machine are a nice bonus.</p>
+            <footer><span data-i18n="rv.src">Source</span><i data-i18n="rv.r4d">December 2024</i></footer>
+          </article>
+        </div>
+        <button class="slider__nav slider__nav--prev" type="button" data-slider-prev aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="slider__nav slider__nav--next" type="button" data-slider-next aria-label="Next"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== OFFERS ============================== -->
+  <section class="section offers" id="offers">
+    <div class="container">
+      <header class="sec-head">
+        <span class="sec-head__label" data-i18n="of.label">Offers</span>
+        <h2 class="sec-title" data-i18n="of.title">Special offers</h2>
+      </header>
+
+      <div class="offers__grid">
+        <article class="offer" data-reveal>
+          <figure class="media ratio-16x10" data-ph="ph.offer1:Offer image"><img src="assets/img/offers/happy-hours.jpg" alt="Happy hours offer" loading="lazy"></figure>
+          <div class="offer__body">
+            <span class="offer__tag" data-i18n="of.t1">&minus;20%</span>
+            <h3 data-i18n="of.n1">Happy hours</h3>
+            <p data-i18n-html="of.d1">Every day from 11:00 to 18:00. <b>Three hours for the price of two.</b></p>
+            <button class="link" type="button" data-open-modal="offer" data-i18n="of.cta">Book this offer</button>
+          </div>
+        </article>
+
+        <article class="offer" data-reveal>
+          <figure class="media ratio-16x10" data-ph="ph.offer2:Offer image"><img src="assets/img/offers/early-booking.jpg" alt="Early booking offer" loading="lazy"></figure>
+          <div class="offer__body">
+            <span class="offer__tag" data-i18n="of.t2">&minus;15%</span>
+            <h3 data-i18n="of.n2">Early booking</h3>
+            <p data-i18n-html="of.d2">Don&rsquo;t leave it for the last moment. Book at least 15 days before arrival and get <b>15% off</b> the whole stay.</p>
+            <button class="link" type="button" data-open-modal="offer" data-i18n="of.cta">Book this offer</button>
+          </div>
+        </article>
+
+        <article class="offer" data-reveal>
+          <figure class="media ratio-16x10" data-ph="ph.offer3:Offer image"><img src="assets/img/offers/night-rate.jpg" alt="Night rate offer" loading="lazy"></figure>
+          <div class="offer__body">
+            <span class="offer__tag" data-i18n="of.t3">&minus;25%</span>
+            <h3 data-i18n="of.n3">Night rate</h3>
+            <p data-i18n-html="of.d3">The best choice when you only need a few hours. <b>Conditions: stay from 22:00 to 09:00.</b></p>
+            <button class="link" type="button" data-open-modal="offer" data-i18n="of.cta">Book this offer</button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== CONTACTS ============================== -->
+  <section class="section contacts" id="contacts">
+    <div class="container">
+      <div class="contacts__in">
+        <div class="map" data-reveal>
+          <figure class="media ratio-4x3 map__ph" data-ph="ph.map:Google Maps embed">
+            <img src="assets/img/contacts/map.jpg" alt="Map of the hotel location" loading="lazy">
+          </figure>
+          <a class="map__open" href="https://www.google.com/maps/search/?api=1&amp;query=Zaporizhzhia" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.1 7-11a7 7 0 10-14 0c0 5.9 7 11 7 11z" fill="none" stroke="currentColor" stroke-width="1.9"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="currentColor" stroke-width="1.9"/></svg>
+            <span data-i18n="ct.mapOpen">Open in Google Maps</span>
+          </a>
+        </div>
+
+        <div class="contacts__info">
+          <header class="sec-head sec-head--left">
+            <span class="sec-head__label" data-i18n="ct.label">Contacts</span>
+            <h2 class="sec-title" data-i18n="ct.title">Get in touch</h2>
+          </header>
+
+          <div class="ct-list">
+            <a class="ct" href="tel:+38067000000">
+              <span class="ct__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15 15 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.46.57 3.6a1 1 0 01-.25 1l-2.2 2.2z" fill="currentColor"/></svg></span>
+              <span><i data-i18n="ct.phoneLbl">Phone</i><b>+38 067 000 00 00</b><b>+38 050 000 00 00</b></span>
+            </a>
+            <a class="ct" href="mailto:hello@example.com">
+              <span class="ct__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 7l8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+              <span><i data-i18n="ct.emailLbl">Email</i><b>hello@example.com</b></span>
+            </a>
+            <div class="ct">
+              <span class="ct__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.1 7-11a7 7 0 10-14 0c0 5.9 7 11 7 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+              <span><i data-i18n="ct.addrLbl">Address</i><b data-i18n="ct.addr">77 Stolyarna St, Zaporizhzhia, Ukraine</b></span>
+            </div>
+            <div class="ct">
+              <span class="ct__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5.3l3.3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+              <span><i data-i18n="ct.hoursLbl">Reception</i><b data-i18n="ct.hours">24 hours, every day</b></span>
+            </div>
+          </div>
+
+          <div class="ct-cta">
+            <p data-i18n="ct.q">Still have questions?</p>
+            <p data-i18n="ct.q2">We&rsquo;ll be glad to answer.</p>
+            <button class="btn btn--outline" type="button" data-open-modal="consult" data-i18n="ct.cta">Request a consultation</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================== FOOTER ============================== -->
+<footer class="ftr">
+  <div class="ftr__bg" aria-hidden="true"></div>
+  <div class="container">
+    <div class="ftr__top">
+      <div class="ftr__brand">
+        <span class="brand__mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M16 3l3.6 7.7 8.4 1-6.2 5.8 1.6 8.3L16 21.8 8.6 25.8l1.6-8.3L4 11.7l8.4-1L16 3z" fill="currentColor"/><circle cx="16" cy="27.5" r="1.6" fill="currentColor" opacity=".5"/></svg></span>
+        <div>
+          <b class="brand__name" data-i18n="brand.name">AURORA</b>
+          <p data-i18n="brand.sub">mini-hotel</p>
+        </div>
+      </div>
+      <div class="ftr__cta">
+        <h2 data-i18n="ftr.title">Need help with booking?</h2>
+        <p data-i18n="ftr.sub">Leave a request and we&rsquo;ll help you choose</p>
+        <button class="btn btn--primary" type="button" data-open-modal="footer" data-i18n="form.submit">Send</button>
+      </div>
+      <ul class="ftr__links">
+        <li><a href="#rooms" data-i18n="nav.rooms">Rooms</a></li>
+        <li><a href="#amenities" data-i18n="nav.amenities">Amenities</a></li>
+        <li><a href="#offers" data-i18n="nav.offers">Offers</a></li>
+        <li><a href="#reviews" data-i18n="nav.reviews">Reviews</a></li>
+        <li><a href="#contacts" data-i18n="nav.contacts">Contacts</a></li>
+      </ul>
+    </div>
+    <div class="ftr__bot">
+      <p>&copy; <span id="year">2026</span> <span data-i18n="brand.name">AURORA</span>. <span data-i18n="ftr.rights">All rights reserved.</span></p>
+      <p class="ftr__dev"><span data-i18n="ftr.made">Made with care &middot; hosted on Cloudflare</span></p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================== FLOATING UI ============================== -->
+<button class="to-top" type="button" data-to-top aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m0 0l-6 6m6-6l6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<a class="chat" href="#contacts">
+  <span class="chat__ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4a2 2 0 00-2 2v9a2 2 0 002 2h3v4l4.5-4H20a2 2 0 002-2V6a2 2 0 00-2-2z" fill="currentColor"/></svg><i class="chat__dot"></i></span>
+  <span class="chat__txt" data-i18n="chat.txt">Questions? Write to us</span>
+</a>
+
+<!-- ============================== MODAL ============================== -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__backdrop" data-modal-close></div>
+  <div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="modal__x" type="button" data-modal-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="modal__media" data-modal-media hidden>
+      <figure class="media ratio-16x9" data-ph="ph.video:Video placeholder"><img src="assets/img/tour/poster.jpg" alt="" loading="lazy"></figure>
+    </div>
+
+    <div class="modal__body">
+      <h2 id="modalTitle" data-i18n="m.title">Book a room</h2>
+      <p class="modal__sub" data-i18n="m.sub">Leave your details and the manager will call you back shortly.</p>
+
+      <form class="lead-form lead-form--modal" data-lead-form="Modal" novalidate>
+        <div class="field">
+          <input type="text" id="mf-name" name="name" autocomplete="name" placeholder=" " required>
+          <label for="mf-name" data-i18n="form.name">Your name</label>
+        </div>
+        <div class="field">
+          <input type="tel" id="mf-phone" name="phone" autocomplete="tel" placeholder=" " required>
+          <label for="mf-phone" data-i18n="form.phone">Your phone</label>
+        </div>
+        <button class="btn btn--primary btn--wide" type="submit" data-i18n="m.btn">Get the gift</button>
+        <p class="lead-form__note" data-i18n="form.note">We&rsquo;ll call you back within 15 minutes and never share your number.</p>
+      </form>
+
+      <p class="lead-form__ok" hidden data-lead-ok>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span data-i18n="form.ok">Thanks! Your request has been sent &mdash; we&rsquo;ll be in touch shortly.</span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
