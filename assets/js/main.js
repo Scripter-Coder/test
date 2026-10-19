@@ -575,15 +575,20 @@
     });
   });
 
-  /* ------------------------------------------------------------------ reviews */
+  /* ------------------------------------------------------------------ reviews
+     Reviews are stored publicly so every visitor sees the same list.
+     Backend: MantleDB (free anonymous JSON store, CORS enabled).
+     Set window.AURORA_REVIEWS_API to point somewhere else if you prefer.  */
   const REV_KEY = 'aurora_reviews';
+  const REV_API = (window.AURORA_REVIEWS_API || 'https://mantledb.sh/v2/aurora-mondragone-reviews/reviews').replace(/\/+$/, '');
+  const REV_MAX = 200;
 
-  function revStore() {
-    try { return JSON.parse(localStorage.getItem(REV_KEY) || '[]'); }
+  function revLocal() {
+    try { const v = JSON.parse(localStorage.getItem(REV_KEY) || '[]'); return Array.isArray(v) ? v : []; }
     catch (e) { return []; }
   }
-  function revSave(list) {
-    try { localStorage.setItem(REV_KEY, JSON.stringify(list)); } catch (e) {}
+  function revLocalSet(list) {
+    try { localStorage.setItem(REV_KEY, JSON.stringify(list.slice(0, REV_MAX))); } catch (e) {}
   }
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function(c) {
@@ -591,7 +596,8 @@
     });
   }
   function starStr(n) {
-    n = parseInt(n) || 0;
+    n = parseInt(n, 10) || 0;
+    n = Math.max(0, Math.min(5, n));
     return '\u2605'.repeat(n) + '\u2606'.repeat(5 - n);
   }
   function revDescHtml(desc) {
@@ -601,12 +607,31 @@
       '<span class="full-desc" hidden>' + esc(desc.slice(140)) + '</span>';
   }
 
+  // In-memory list, source of truth for rendering
+  let revData = [];
+
+  function revNormalize(r) {
+    return {
+      id: String(r.id || (Date.now() + '-' + Math.random().toString(36).slice(2, 8))),
+      name: String(r.name || 'Guest').slice(0, 60),
+      rating: Math.max(1, Math.min(5, parseInt(r.rating, 10) || 5)),
+      desc: String(r.desc || '').slice(0, 2000),
+      time: r.time || new Date().toISOString()
+    };
+  }
+
+  function revSort(list) {
+    return list.slice().sort(function (a, b) {
+      return new Date(b.time).getTime() - new Date(a.time).getTime();
+    });
+  }
+
   function buildRevNode(r, idx) {
     const art = document.createElement('article');
     art.className = 'rev';
     art.setAttribute('data-idx', String(idx));
     const date = new Date(r.time);
-    const dateStr = isNaN(date.getTime()) ? '' : date.toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' });
+    const dateStr = isNaN(date.getTime()) ? '' : date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
     art.innerHTML =
       '<div class="rev__stars" role="img" aria-label="' + r.rating + ' out of 5"><span>' + starStr(r.rating) + '</span></div>' +
       '<h3>' + esc(r.name) + '</h3>' +
@@ -622,19 +647,58 @@
   function renderReviews() {
     const list = document.getElementById('reviewsList');
     if (!list) return;
-    const saved = revStore();
     list.innerHTML = '';
-    if (!saved.length) {
+    if (!revData.length) {
       const p = document.createElement('p');
       p.className = 'rev-list__empty';
       p.textContent = t('rv.empty') || 'Reviews will show up here once submitted.';
       list.appendChild(p);
       return;
     }
-    saved.forEach(function(r, i) { list.appendChild(buildRevNode(r, i)); });
+    revData.forEach(function (r, i) { list.appendChild(buildRevNode(r, i)); });
   }
 
-  // edit / delete / read-more (delegated)
+  /* ------------------------------------------------------- remote (public) store */
+  async function revFetch() {
+    try {
+      const res = await fetch(REV_API + '?t=' + Date.now(), { headers: { 'Accept': 'application/json' } });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const arr = Array.isArray(data) ? data : (data && Array.isArray(data.reviews) ? data.reviews : []);
+      if (arr.length) {
+        revData = revSort(arr.map(revNormalize));
+        revLocalSet(revData);
+        renderReviews();
+      }
+    } catch (e) {
+      // offline / API down -> keep whatever we have locally
+      if (!revData.length) {
+        revData = revSort(revLocal().map(revNormalize));
+        renderReviews();
+      }
+    }
+  }
+
+  async function revPush() {
+    try {
+      await fetch(REV_API, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reviews: revData })
+      });
+    } catch (e) { /* keep local copy, it will sync next time */ }
+  }
+
+  function revLocalMerge(newReview) {
+    const local = revLocal().map(revNormalize);
+    const byId = {};
+    local.concat(revData).forEach(function (r) { byId[r.id] = r; });
+    if (newReview) byId[newReview.id] = newReview;
+    revData = revSort(Object.keys(byId).map(function (k) { return byId[k]; }));
+    revLocalSet(revData);
+  }
+
+  /* ---------------------------------------------------- edit / delete / read more */
   on(document, 'click', function (e) {
     const more = e.target.closest('[data-more]');
     if (more) {
@@ -646,16 +710,17 @@
     const del = e.target.closest('[data-del]');
     if (del) {
       const idx = parseInt(del.getAttribute('data-del'), 10);
-      const saved = revStore();
-      if (idx >= 0 && idx < saved.length) { saved.splice(idx, 1); revSave(saved); }
+      if (idx < 0 || !revData[idx]) return;
+      revData.splice(idx, 1);
+      revLocalSet(revData);
       renderReviews();
+      revPush();
       return;
     }
     const ed = e.target.closest('[data-edit]');
     if (ed) {
       const idx = parseInt(ed.getAttribute('data-edit'), 10);
-      const saved = revStore();
-      const r = saved[idx];
+      const r = revData[idx];
       if (!r) return;
       const n = window.prompt(t('rv.formName') || 'Your name', r.name);
       if (n === null) return;
@@ -663,33 +728,52 @@
       if (d === null) return;
       const st = window.prompt(t('rv.formRating') || 'Rating (1-5 stars)', r.rating);
       if (st === null) return;
-      const rating = Math.min(5, Math.max(1, parseInt(st, 10) || r.rating));
-      saved[idx] = { name: n.trim() || r.name, desc: d.trim() || r.desc, rating: rating, time: r.time };
-      revSave(saved);
+      r.name = n.trim() || r.name;
+      r.desc = d.trim() || r.desc;
+      r.rating = Math.max(1, Math.min(5, parseInt(st, 10) || r.rating));
+      revLocalSet(revData);
       renderReviews();
+      revPush();
     }
   });
 
-  window.submitReview = function(e) {
+  window.submitReview = async function (e) {
     e.preventDefault();
-    const name = document.getElementById('revName').value.trim();
-    const rating = document.getElementById('revRating').value;
-    const desc = document.getElementById('revDesc').value.trim();
+    const nameEl = document.getElementById('revName');
+    const ratingEl = document.getElementById('revRating');
+    const descEl = document.getElementById('revDesc');
+    const name = nameEl.value.trim();
+    const rating = ratingEl.value;
+    const desc = descEl.value.trim();
     if (!name || !rating || !desc) return;
-    const saved = revStore();
-    saved.unshift({ name: name, rating: parseInt(rating, 10), desc: desc, time: new Date().toISOString() });
-    revSave(saved);
+
+    const review = revNormalize({
+      id: Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8),
+      name: name, rating: rating, desc: desc, time: new Date().toISOString()
+    });
+
+    revLocalMerge(review);
     renderReviews();
     document.getElementById('reviewForm').reset();
+
+    const status = document.querySelector('[data-rev-status]');
+    if (status) {
+      status.hidden = false;
+      status.className = 'rev-form__status is-ok';
+      status.textContent = t('rv.ok') || 'Thanks! Your review has been published.';
+    }
+    revPush();
   };
 
-  window.deleteReview = function(btn) {
+  window.deleteReview = function (btn) {
     const art = btn.closest('.rev');
     if (!art) return;
     const idx = parseInt(art.getAttribute('data-idx'), 10);
-    const saved = revStore();
-    if (idx >= 0 && idx < saved.length) { saved.splice(idx, 1); revSave(saved); }
+    if (idx < 0 || !revData[idx]) return;
+    revData.splice(idx, 1);
+    revLocalSet(revData);
     renderReviews();
+    revPush();
   };
 
   /* ------------------------------------------------------------------ misc */
@@ -697,6 +781,8 @@
   if (year) year.textContent = new Date().getFullYear();
 
   /* --------------------------------------------------------------- go ahead */
+  revData = revSort(revLocal().map(revNormalize));
   renderReviews();
   applyI18n();
+  revFetch();
 })();

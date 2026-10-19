@@ -522,21 +522,23 @@ button{cursor:pointer;border:0;background:none}
 .video__hint{position:absolute;bottom:20px;left:0;right:0;text-align:center;font-size:.78rem;color:rgba(255,255,255,.72);letter-spacing:.06em}
 .video__chip{position:absolute;top:18px;left:18px;padding:7px 15px;border-radius:var(--r-pill);background:rgba(4,20,26,.6);backdrop-filter:blur(10px);font-size:.78rem;font-weight:700;color:#fff}
 
-/* vertical video (9:16) - kept small and centered */
+/* vertical video (9:16) - small, centered, native controls visible */
 .video--v{
-  width:min(360px,100%);margin-inline:auto;border-radius:var(--r-lg);
-  aspect-ratio:9/16;max-height:min(70vh,620px);
+  position:relative;width:min(300px,100%);margin-inline:auto;
+  border-radius:var(--r-lg);overflow:hidden;background:#04141a;
+  border:1px solid var(--line);box-shadow:var(--shadow);
 }
-.video--v .media{border:0;border-radius:inherit;aspect-ratio:9/16;height:100%}
-.video--v video{width:100%;height:100%;object-fit:cover;display:block;background:#04141a}
+.video__frame{position:relative;width:100%;aspect-ratio:9/16;background:#04141a}
+.video__frame video{width:100%;height:100%;object-fit:contain;display:block;background:#04141a}
+.video--v .video__chip{top:10px;left:10px;padding:5px 12px;font-size:.7rem}
 
 /* room media video */
 .video-wrapper{
   position:relative;border-radius:var(--r);overflow:hidden;
   background:#04141a;border:1px solid var(--line);
-  aspect-ratio:9/16;max-height:min(72vh,640px);margin-inline:auto;width:min(420px,100%);
+  aspect-ratio:9/16;width:min(300px,100%);margin-inline:auto;
 }
-.video-wrapper video{width:100%;height:100%;object-fit:cover;display:block}
+.video-wrapper video{width:100%;height:100%;object-fit:contain;display:block;background:#04141a}
 
 /* ============================================================= 10c. REVIEWS */
 .slider--reviews{--gap:clamp(14px,1.6vw,22px)}
@@ -582,6 +584,11 @@ button{cursor:pointer;border:0;background:none}
 .rev-form__grid select option{background:var(--bg-2);color:var(--text)}
 .rev-form__grid .field textarea{min-height:96px}
 .rev-form__submit{grid-column:1/-1;justify-self:start}
+.rev-form__status{
+  grid-column:1/-1;margin:0;padding:11px 15px;border-radius:12px;font-size:.88rem;font-weight:600;
+  background:rgba(20,184,166,.14);border:1px solid rgba(20,184,166,.4);color:var(--text);
+}
+.rev-form__status.is-ok{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.4)}
 .rev-list{display:grid;gap:16px}
 .rev-list__empty{color:var(--muted);font-size:.95rem;margin:0}
 .rev__stars span{color:#fbbf24;font-size:1.1rem;letter-spacing:2px}
@@ -780,14 +787,18 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
   .aw-stats{gap:20px}
 }
 
-.social-float{position:fixed;right:22px;bottom:120px;z-index:90;display:flex;flex-direction:column;gap:10px;}
-.social-btn{
-  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
-  background:var(--grad);box-shadow:0 14px 30px -12px rgba(20,184,166,.85);transition:.3s var(--ease);
+.social-float{
+  position:fixed;right:22px;bottom:120px;z-index:90;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
 }
-.social-btn:hover{transform:translateY(-4px) scale(1.06);box-shadow:0 20px 38px -10px rgba(20,184,166,1)}
-.social-btn__icon{width:100%;height:100%;display:grid;place-items:center;border-radius:50%;overflow:hidden}
-.social-btn__icon img{width:100%;height:100%;object-fit:cover;display:block}
+.social-btn{
+  width:54px;height:54px;border-radius:50%;display:grid;place-items:center;
+  background:var(--bg-2);border:1px solid var(--line-2);
+  box-shadow:0 14px 30px -14px rgba(0,0,0,.7);transition:.3s var(--ease);
+}
+.social-btn:hover{transform:translateY(-4px) scale(1.08);border-color:transparent;box-shadow:0 20px 38px -12px rgba(0,0,0,.8)}
+.social-btn__icon{width:100%;height:100%;display:grid;place-items:center;border-radius:50%;overflow:hidden;line-height:0}
+.social-btn__icon img{width:100%;height:100%;object-fit:contain;display:block}
 
 /* --------------------------------------------------- motion / print prefs */
 @media (prefers-reduced-motion:reduce){
