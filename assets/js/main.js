@@ -146,6 +146,81 @@
     });
   })();
 
+  /* ---------------------------------------------------------------- hero slideshow
+     8 background photos, one every 5 seconds, smooth cross-fade. */
+  (function heroSlideshow() {
+    const wrap = document.querySelector('[data-hero-slides]');
+    if (!wrap) return;
+    const slides = Array.from(wrap.querySelectorAll('.hero__slide'));
+    if (slides.length < 2) return;
+    const dotsWrap = document.querySelector('[data-hero-dots]');
+    const INTERVAL = 5000;
+
+    let index = 0;
+    let timer = null;
+
+    // build the dots
+    if (dotsWrap) {
+      slides.forEach(function (s, i) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('aria-label', 'Image ' + (i + 1));
+        b.addEventListener('click', function () { go(i, true); });
+        dotsWrap.appendChild(b);
+      });
+    }
+    const dots = dotsWrap ? Array.from(dotsWrap.children) : [];
+
+    function show(i) {
+      index = (i + slides.length) % slides.length;
+      slides.forEach(function (s, n) { s.classList.toggle('is-active', n === index); });
+      dots.forEach(function (d, n) { d.classList.toggle('is-active', n === index); });
+    }
+    function go(i, userAction) {
+      show(i);
+      if (userAction) restart();
+    }
+    function next() { show(index + 1); }
+
+    function start() {
+      if (timer) clearInterval(timer);
+      timer = setInterval(next, INTERVAL);
+    }
+    function restart() { start(); }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+
+    show(0);
+    start();
+
+    // pause while the tab is hidden
+    on(document, 'visibilitychange', function () {
+      if (document.hidden) stop(); else start();
+    });
+
+    // pause on hover
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      on(hero, 'mouseenter', stop);
+      on(hero, 'mouseleave', start);
+    }
+
+    // swipe / drag on touch devices
+    let startX = null;
+    on(wrap, 'touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+    on(wrap, 'touchend', function (e) {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 45) go(index + (dx < 0 ? 1 : -1), true);
+      startX = null;
+    });
+
+    // keyboard arrows when the hero is in view
+    on(document, 'keydown', function (e) {
+      if (e.key === 'ArrowLeft') { go(index - 1, true); }
+      if (e.key === 'ArrowRight') { go(index + 1, true); }
+    });
+  })();
+
   /* ----------------------------------------------------------------- theme */
   (function theme() {
     const root = document.documentElement;
@@ -164,21 +239,46 @@
      styled .media placeholder underneath it. Drop the real file in later and
      the image appears automatically — no code changes.                  */
   (function mediaFallback() {
+    // mark the wrapper once a real image is present so the dashed
+    // placeholder frame + label disappear
+    function markLoaded(img) {
+      const box = img.closest('.media');
+      if (box) box.classList.add('has-img');
+    }
+    function markMissing(img) {
+      img.classList.add('is-missing');
+      img.setAttribute('aria-hidden', 'true');
+    }
+    function check(img) {
+      if (!img || img.tagName !== 'IMG') return;
+      if (img.complete) {
+        if (img.naturalWidth > 0) markLoaded(img);
+        else markMissing(img);
+      }
+    }
+
     document.addEventListener('error', function (e) {
       const img = e.target;
-      if (img && img.tagName === 'IMG') {
-        img.classList.add('is-missing');
-        img.setAttribute('aria-hidden', 'true');
-      }
+      if (img && img.tagName === 'IMG') markMissing(img);
     }, true);
 
-    // Also catch files already in the cache as broken before this ran
-    $$('img').forEach(function (img) {
-      if (img.complete && img.naturalWidth === 0) {
-        img.classList.add('is-missing');
-        img.setAttribute('aria-hidden', 'true');
-      }
-    });
+    document.addEventListener('load', function (e) {
+      const img = e.target;
+      if (img && img.tagName === 'IMG' && img.naturalWidth > 0) markLoaded(img);
+    }, true);
+
+    // cover images that already finished loading (or are cached)
+    $$('img').forEach(check);
+
+    // lazy images that load later
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { check(entry.target); io.unobserve(entry.target); }
+        });
+      }, { rootMargin: '300px' });
+      $$('img[loading="lazy"]').forEach(function (img) { io.observe(img); });
+    }
   })();
 
   /* ------------------------------------------------------------ mobile nav */
@@ -636,11 +736,7 @@
       '<div class="rev__stars" role="img" aria-label="' + r.rating + ' out of 5"><span>' + starStr(r.rating) + '</span></div>' +
       '<h3>' + esc(r.name) + '</h3>' +
       '<p class="rev__text">' + revDescHtml(r.desc) + '</p>' +
-      '<footer><span>' + esc(t('rv.src') || 'Source') + '</span><i>' + esc(dateStr) + '</i>' +
-      '<span class="rev__actions">' +
-        '<button type="button" data-edit="' + idx + '">' + esc(t('rv.edit') || 'Edit') + '</button>' +
-        '<button type="button" class="rev__del" data-del="' + idx + '">' + esc(t('rv.delete') || 'Delete') + '</button>' +
-      '</span></footer>';
+      '<footer><span>' + esc(t('rv.src') || 'Source') + '</span><i>' + esc(dateStr) + '</i></footer>';
     return art;
   }
 
@@ -698,7 +794,7 @@
     revLocalSet(revData);
   }
 
-  /* ---------------------------------------------------- edit / delete / read more */
+  /* ------------------------------------------------------------- read more */
   on(document, 'click', function (e) {
     const more = e.target.closest('[data-more]');
     if (more) {
@@ -706,34 +802,6 @@
       const full = p.querySelector('.full-desc');
       if (full) { full.hidden = false; more.remove(); }
       return;
-    }
-    const del = e.target.closest('[data-del]');
-    if (del) {
-      const idx = parseInt(del.getAttribute('data-del'), 10);
-      if (idx < 0 || !revData[idx]) return;
-      revData.splice(idx, 1);
-      revLocalSet(revData);
-      renderReviews();
-      revPush();
-      return;
-    }
-    const ed = e.target.closest('[data-edit]');
-    if (ed) {
-      const idx = parseInt(ed.getAttribute('data-edit'), 10);
-      const r = revData[idx];
-      if (!r) return;
-      const n = window.prompt(t('rv.formName') || 'Your name', r.name);
-      if (n === null) return;
-      const d = window.prompt(t('rv.formDesc') || 'Description', r.desc);
-      if (d === null) return;
-      const st = window.prompt(t('rv.formRating') || 'Rating (1-5 stars)', r.rating);
-      if (st === null) return;
-      r.name = n.trim() || r.name;
-      r.desc = d.trim() || r.desc;
-      r.rating = Math.max(1, Math.min(5, parseInt(st, 10) || r.rating));
-      revLocalSet(revData);
-      renderReviews();
-      revPush();
     }
   });
 
@@ -765,16 +833,6 @@
     revPush();
   };
 
-  window.deleteReview = function (btn) {
-    const art = btn.closest('.rev');
-    if (!art) return;
-    const idx = parseInt(art.getAttribute('data-idx'), 10);
-    if (idx < 0 || !revData[idx]) return;
-    revData.splice(idx, 1);
-    revLocalSet(revData);
-    renderReviews();
-    revPush();
-  };
 
   /* ------------------------------------------------------------------ misc */
   const year = $('#year');

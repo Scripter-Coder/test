@@ -106,8 +106,18 @@
   <!-- ============================== HERO ============================== -->
   <section class="hero">
     <div class="hero__bg" aria-hidden="true">
-      <img src="assets/img/hero/hero.jpg" alt="" data-ph="ph.hero:Hero background" loading="eager">
+      <div class="hero__slides" data-hero-slides>
+        <img class="hero__slide is-active" src="assets/img/hero/slide-1.jpg" alt="" loading="eager">
+        <img class="hero__slide" src="assets/img/hero/slide-2.jpg" alt="" loading="lazy">
+        <img class="hero__slide" src="assets/img/hero/slide-3.jpg" alt="" loading="lazy">
+        <img class="hero__slide" src="assets/img/hero/slide-4.jpg" alt="" loading="lazy">
+        <img class="hero__slide" src="assets/img/hero/slide-5.jpg" alt="" loading="lazy">
+        <img class="hero__slide" src="assets/img/hero/slide-6.jpg" alt="" loading="lazy">
+        <img class="hero__slide" src="assets/img/hero/slide-7.jpg" alt="" loading="lazy">
+        <img class="hero__slide" src="assets/img/hero/slide-8.jpg" alt="" loading="lazy">
+      </div>
       <div class="hero__veil"></div>
+      <div class="hero__dots" data-hero-dots></div>
     </div>
 
     <div class="container hero__in">
@@ -313,7 +323,7 @@
       <div class="offers__grid">
 
         <article class="offer" data-reveal>
-          <figure class="media ratio-16x10" data-ph="ph.offer2:Offer image"><img src="assets/img/offers/clock_image.png" alt="Early booking offer" loading="lazy"></figure>
+          <figure class="media ratio-16x10"><img src="assets/img/offers/clock_image.png" alt="Early booking offer" loading="lazy"></figure>
           <div class="offer__body">
             <span class="offer__tag" data-i18n="of.t2">&minus;15%</span>
             <h3 data-i18n="of.n2">Prenotazione anticipata</h3>
@@ -323,7 +333,7 @@
         </article>
 
         <article class="offer" data-reveal>
-          <figure class="media ratio-16x10" data-ph="ph.offer3:Offer image"><img src="assets/img/offers/sleeping.girl.png" alt="Night rate offer" loading="lazy"></figure>
+          <figure class="media ratio-16x10"><img src="assets/img/offers/sleeping_girl.png" alt="Night rate offer" loading="lazy"></figure>
           <div class="offer__body">
             <span class="offer__tag" data-i18n="of.t3">&minus;25%</span>
             <h3 data-i18n="of.n3">Tariffa notturna</h3>

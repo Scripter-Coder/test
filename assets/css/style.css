@@ -228,10 +228,18 @@ button{cursor:pointer;border:0;background:none}
 [data-theme="light"] .theme-btn .i-sun{display:block}
 [data-theme="light"] .theme-btn .i-moon{display:none}
 
-.burger{display:none;flex-direction:column;gap:5px}
-.burger span{display:block;width:19px;height:2px;border-radius:2px;background:currentColor;transition:.3s var(--ease)}
+/* burger / menu toggle - always perfectly centred in its 44x44 button */
+.burger{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;position:relative;padding:0;
+}
+.burger span{
+  display:block;width:19px;height:2px;flex:0 0 auto;
+  border-radius:2px;background:currentColor;
+  transition:transform .3s var(--ease),opacity .2s linear;
+}
 .nav-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.nav-open .burger span:nth-child(2){opacity:0}
+.nav-open .burger span:nth-child(2){opacity:0;transform:scaleX(.4)}
 .nav-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
 .hdr__progress{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:transparent}
@@ -239,16 +247,45 @@ button{cursor:pointer;border:0;background:none}
 
 /* ================================================================= 6. HERO */
 .hero{position:relative;min-height:clamp(620px,86vh,900px);display:flex;align-items:center;padding-block:clamp(60px,9vw,120px) clamp(90px,10vw,150px);overflow:hidden}
-.hero__bg{position:absolute;inset:0;z-index:0;background:var(--ph-base)}
-.hero__bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .5s}
-.hero__bg img.is-missing{opacity:0}
+.hero__bg{position:absolute;inset:0;z-index:0;background:var(--ph-base);overflow:hidden}
+
+/* ---- hero slideshow: 8 images, 5s each, smooth cross-fade ---- */
+.hero__slides{position:absolute;inset:0}
+.hero__slide{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;opacity:0;
+  transform:scale(1.06);
+  transition:opacity 1.4s ease, transform 7s ease;
+  will-change:opacity,transform;
+}
+.hero__slide.is-active{opacity:1;transform:scale(1)}
+.hero__slide.is-missing{opacity:0}
+
+/* dots */
+.hero__dots{
+  position:absolute;left:50%;bottom:96px;transform:translateX(-50%);z-index:3;
+  display:flex;align-items:center;gap:9px;
+}
+.hero__dots button{
+  width:9px;height:9px;padding:0;border-radius:50%;
+  background:rgba(255,255,255,.42);box-shadow:0 0 0 1px rgba(4,17,22,.35);
+  transition:width .35s var(--ease),background .35s;
+  cursor:pointer;
+}
+.hero__dots button.is-active{width:26px;border-radius:999px;background:var(--teal)}
+
+/* lighter veil so the photo stays clearly visible */
 .hero__veil{
   position:absolute;inset:0;
   background:
-    linear-gradient(180deg,rgba(4,17,22,.9) 0%,rgba(4,17,22,.62) 42%,rgba(4,17,22,.94) 100%),
-    linear-gradient(100deg,rgba(4,17,22,.9) 0%,rgba(4,17,22,.3) 62%,rgba(4,17,22,.55) 100%);
+    linear-gradient(180deg,rgba(4,17,22,.72) 0%,rgba(4,17,22,.30) 38%,rgba(4,17,22,.72) 100%),
+    linear-gradient(100deg,rgba(4,17,22,.72) 0%,rgba(4,17,22,.08) 58%,rgba(4,17,22,.30) 100%);
 }
-[data-theme="light"] .hero__veil{background:linear-gradient(180deg,rgba(8,36,48,.82),rgba(8,36,48,.45) 45%,rgba(8,36,48,.9))}
+[data-theme="light"] .hero__veil{
+  background:
+    linear-gradient(180deg,rgba(8,36,48,.62) 0%,rgba(8,36,48,.22) 38%,rgba(8,36,48,.66) 100%),
+    linear-gradient(100deg,rgba(8,36,48,.62) 0%,rgba(8,36,48,.06) 58%,rgba(8,36,48,.26) 100%);
+}
 .hero__in{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,60px);align-items:center}
 
 .pills{
@@ -319,6 +356,10 @@ button{cursor:pointer;border:0;background:none}
 .media>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;color:transparent;font-size:0;transition:opacity .5s,transform .8s var(--ease)}
 .media>img.is-missing{opacity:0}
 .media>img + .ph-ico{position:relative}
+
+/* once a real image is present, drop the dashed frame + placeholder chrome */
+.media.has-img{border-style:solid;border-color:var(--line)}
+.media.has-img::before,.media.has-img::after{display:none}
 .ratio-4x3{aspect-ratio:4/3}
 .ratio-9x16{aspect-ratio:9/16}
 .ratio-16x9{aspect-ratio:16/9}
@@ -686,8 +727,9 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
 .ftr__bot p{margin:0}
 
 /* ================================================= floating buttons & MODAL */
+/* stack order bottom -> top:  chat (left)  |  to-top  |  social (viber, whatsapp) */
 .to-top{
-  position:fixed;right:22px;bottom:100px;z-index:90;width:48px;height:48px;border-radius:50%;
+  position:fixed;right:22px;bottom:22px;z-index:90;width:48px;height:48px;border-radius:50%;
   display:grid;place-items:center;color:#03161c;background:var(--grad);
   box-shadow:0 16px 34px -16px rgba(20,184,166,1);
   opacity:0;visibility:hidden;transform:translateY(16px) scale(.85);
@@ -780,7 +822,8 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
   .hero__stats{gap:20px}
   .chat__txt{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
   .chat{padding:11px}
-  .to-top{right:16px;bottom:88px}
+  .to-top{right:16px;bottom:82px}
+  .social-float{right:16px;bottom:142px}
   .slider__nav{width:40px;height:40px;margin-top:-20px}
   .room__foot{flex-direction:column;align-items:stretch}
   .room__foot .btn{width:100%}
@@ -788,7 +831,7 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
 }
 
 .social-float{
-  position:fixed;right:22px;bottom:120px;z-index:90;
+  position:fixed;right:22px;bottom:82px;z-index:90;
   display:flex;flex-direction:column;align-items:center;gap:12px;
 }
 .social-btn{
