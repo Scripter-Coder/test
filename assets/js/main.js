@@ -30,9 +30,9 @@
   /* ------------------------------------------------------------- language */
   const SUPPORTED = Object.keys(I18N);
   let current = (() => {
-    const saved = localStorage.getItem('aurora:lang');
+    const saved = localStorage.getItem('aurora_lang');
     if (saved && SUPPORTED.indexOf(saved) !== -1) return saved;
-    // Default to Italian
+    localStorage.removeItem('aurora:lang');
     return 'it';
   })();
 
@@ -116,11 +116,12 @@
 
   function setLang(code) {
     if (!I18N[code]) return;
-    localStorage.setItem('aurora:lang', code);
+    localStorage.setItem('aurora_lang', code);
     document.documentElement.setAttribute('lang', code);
+    current = code;
     applyI18n();
     updateModalCopy('hero');   // refresh any open modal in place
-    location.reload();         // full refresh with the new language
+    renderReviews();           // re-render saved reviews in the new language
   }
 
   /* ----------------------------------------------------- language dropdown */
@@ -575,20 +576,120 @@
   });
 
   /* ------------------------------------------------------------------ reviews */
+  const REV_KEY = 'aurora_reviews';
+
+  function revStore() {
+    try { return JSON.parse(localStorage.getItem(REV_KEY) || '[]'); }
+    catch (e) { return []; }
+  }
+  function revSave(list) {
+    try { localStorage.setItem(REV_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+  function starStr(n) {
+    n = parseInt(n) || 0;
+    return '\u2605'.repeat(n) + '\u2606'.repeat(5 - n);
+  }
+  function revDescHtml(desc) {
+    if (desc.length <= 140) return esc(desc);
+    return esc(desc.slice(0, 140)) +
+      ' <button type="button" class="rev__more" data-more>[Read More]</button>' +
+      '<span class="full-desc" hidden>' + esc(desc.slice(140)) + '</span>';
+  }
+
+  function buildRevNode(r, idx) {
+    const art = document.createElement('article');
+    art.className = 'rev';
+    art.setAttribute('data-idx', String(idx));
+    const date = new Date(r.time);
+    const dateStr = isNaN(date.getTime()) ? '' : date.toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' });
+    art.innerHTML =
+      '<div class="rev__stars" role="img" aria-label="' + r.rating + ' out of 5"><span>' + starStr(r.rating) + '</span></div>' +
+      '<h3>' + esc(r.name) + '</h3>' +
+      '<p class="rev__text">' + revDescHtml(r.desc) + '</p>' +
+      '<footer><span>' + esc(t('rv.src') || 'Source') + '</span><i>' + esc(dateStr) + '</i>' +
+      '<span class="rev__actions">' +
+        '<button type="button" data-edit="' + idx + '">' + esc(t('rv.edit') || 'Edit') + '</button>' +
+        '<button type="button" class="rev__del" data-del="' + idx + '">' + esc(t('rv.delete') || 'Delete') + '</button>' +
+      '</span></footer>';
+    return art;
+  }
+
+  function renderReviews() {
+    const list = document.getElementById('reviewsList');
+    if (!list) return;
+    const saved = revStore();
+    list.innerHTML = '';
+    if (!saved.length) {
+      const p = document.createElement('p');
+      p.className = 'rev-list__empty';
+      p.textContent = t('rv.empty') || 'Reviews will show up here once submitted.';
+      list.appendChild(p);
+      return;
+    }
+    saved.forEach(function(r, i) { list.appendChild(buildRevNode(r, i)); });
+  }
+
+  // edit / delete / read-more (delegated)
+  on(document, 'click', function (e) {
+    const more = e.target.closest('[data-more]');
+    if (more) {
+      const p = more.parentElement;
+      const full = p.querySelector('.full-desc');
+      if (full) { full.hidden = false; more.remove(); }
+      return;
+    }
+    const del = e.target.closest('[data-del]');
+    if (del) {
+      const idx = parseInt(del.getAttribute('data-del'), 10);
+      const saved = revStore();
+      if (idx >= 0 && idx < saved.length) { saved.splice(idx, 1); revSave(saved); }
+      renderReviews();
+      return;
+    }
+    const ed = e.target.closest('[data-edit]');
+    if (ed) {
+      const idx = parseInt(ed.getAttribute('data-edit'), 10);
+      const saved = revStore();
+      const r = saved[idx];
+      if (!r) return;
+      const n = window.prompt(t('rv.formName') || 'Your name', r.name);
+      if (n === null) return;
+      const d = window.prompt(t('rv.formDesc') || 'Description', r.desc);
+      if (d === null) return;
+      const st = window.prompt(t('rv.formRating') || 'Rating (1-5 stars)', r.rating);
+      if (st === null) return;
+      const rating = Math.min(5, Math.max(1, parseInt(st, 10) || r.rating));
+      saved[idx] = { name: n.trim() || r.name, desc: d.trim() || r.desc, rating: rating, time: r.time };
+      revSave(saved);
+      renderReviews();
+    }
+  });
+
   window.submitReview = function(e) {
     e.preventDefault();
     const name = document.getElementById('revName').value.trim();
     const rating = document.getElementById('revRating').value;
     const desc = document.getElementById('revDesc').value.trim();
     if (!name || !rating || !desc) return;
-    const stars = '★'.repeat(parseInt(rating)) + '☆'.repeat(5 - parseInt(rating));
-    const list = document.getElementById('reviewsList');
-    const fullDesc = desc.length > 120 ? desc.slice(0, 120) + ' <span onclick="this.parentElement.querySelector(\'.full-desc\').style.display=\'inline\';this.style.display=\'none\';" style="cursor:pointer;color:var(--teal);font-weight:600;">[Read More]</span><span class="full-desc" style="display:none;">' + desc.slice(120) + '</span>' : desc;
-    const item = document.createElement('article');
-    item.className = 'rev';
-    item.innerHTML = '<div class="rev__stars" role="img" aria-label="' + rating + ' out of 5"><span style="color:#fbbf24;font-size:1.1rem;letter-spacing:2px;">' + stars + '</span></div><h3 style="font-family:var(--font);font-size:1.06rem;font-weight:800;margin:0;">' + name + '</h3><p style="color:var(--muted);font-size:.95rem;flex:1;">' + fullDesc + '</p><footer style="display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted);padding-top:14px;border-top:1px solid var(--line);"><span>Source</span><i style="margin-left:auto;font-style:normal;">Appena inviato</i></footer>';
-    list.prepend(item);
+    const saved = revStore();
+    saved.unshift({ name: name, rating: parseInt(rating, 10), desc: desc, time: new Date().toISOString() });
+    revSave(saved);
+    renderReviews();
     document.getElementById('reviewForm').reset();
+  };
+
+  window.deleteReview = function(btn) {
+    const art = btn.closest('.rev');
+    if (!art) return;
+    const idx = parseInt(art.getAttribute('data-idx'), 10);
+    const saved = revStore();
+    if (idx >= 0 && idx < saved.length) { saved.splice(idx, 1); revSave(saved); }
+    renderReviews();
   };
 
   /* ------------------------------------------------------------------ misc */
@@ -596,5 +697,6 @@
   if (year) year.textContent = new Date().getFullYear();
 
   /* --------------------------------------------------------------- go ahead */
+  renderReviews();
   applyI18n();
 })();
