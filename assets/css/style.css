@@ -320,6 +320,7 @@ button{cursor:pointer;border:0;background:none}
 .media>img.is-missing{opacity:0}
 .media>img + .ph-ico{position:relative}
 .ratio-4x3{aspect-ratio:4/3}
+.ratio-9x16{aspect-ratio:9/16}
 .ratio-16x9{aspect-ratio:16/9}
 .ratio-16x10{aspect-ratio:16/10}
 .ratio-1x1{aspect-ratio:1/1}
@@ -714,6 +715,13 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
   .room__foot .btn{width:100%}
   .aw-stats{gap:20px}
 }
+
+.social-float{position:fixed;right:22px;bottom:120px;z-index:90;display:flex;flex-direction:column;gap:10px;}
+.social-btn{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--grad);color:#03161c;box-shadow:0 12px 28px -12px rgba(20,184,166,.8);transition:.3s;}
+.social-btn:hover{transform:translateY(-3px);box-shadow:0 16px 34px -10px rgba(20,184,166,1)}
+.social-btn__icon{width:24px;height:24px;display:grid;place-items:center}
+.social-btn--viber svg{width:22px;height:22px;color:#6d1b7b}
+.social-btn--whatsapp svg{width:22px;height:22px;color:#25d366}
 
 /* --------------------------------------------------- motion / print prefs */
 @media (prefers-reduced-motion:reduce){

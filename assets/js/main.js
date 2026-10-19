@@ -32,14 +32,18 @@
   let current = (() => {
     const saved = localStorage.getItem('aurora:lang');
     if (saved && SUPPORTED.indexOf(saved) !== -1) return saved;
-    const nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
-    return SUPPORTED.indexOf(nav) !== -1 ? nav : 'en';
+    // Default to Italian
+    return 'it';
   })();
 
   const FLAGS = {
+    it: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#009246"/><rect x="8" width="8" height="16" fill="#F1F2F1"/><rect x="16" width="8" height="16" fill="#CE2B37"/></svg>',
     en: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#012169"/><path d="M0 0l24 16M24 0L0 16" stroke="#fff" stroke-width="3.4"/><path d="M0 0l24 16M24 0L0 16" stroke="#C8102E" stroke-width="1.7"/><path d="M12 0v16M0 8h24" stroke="#fff" stroke-width="5.4"/><path d="M12 0v16M0 8h24" stroke="#C8102E" stroke-width="3.2"/></svg>',
     ru: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#fff"/><rect y="5.33" width="24" height="5.33" fill="#0039A6"/><rect y="10.66" width="24" height="5.34" fill="#D52B1E"/></svg>',
-    uk: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="8" fill="#0057B7"/><rect y="8" width="24" height="8" fill="#FFD500"/></svg>'
+    uk: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="8" fill="#0057B7"/><rect y="8" width="24" height="8" fill="#FFD500"/></svg>',
+    de: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#FFCE00"/><rect y="5.33" width="24" height="5.33" fill="#000"/><rect y="10.66" width="24" height="5.34" fill="#DD0000"/></svg>',
+    fr: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="8" height="16" fill="#0055A4"/><rect x="8" width="8" height="16" fill="#fff"/><rect x="16" width="8" height="16" fill="#EF4135"/></svg>',
+    es: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#AA151B"/><rect y="4.5" width="24" height="7" fill="#F1BE48"/></svg>'
   };
 
   function paintFlags() {
@@ -569,6 +573,23 @@
       on(input, 'input', function () { input.classList.remove('is-bad'); });
     });
   });
+
+  /* ------------------------------------------------------------------ reviews */
+  window.submitReview = function(e) {
+    e.preventDefault();
+    const name = document.getElementById('revName').value.trim();
+    const rating = document.getElementById('revRating').value;
+    const desc = document.getElementById('revDesc').value.trim();
+    if (!name || !rating || !desc) return;
+    const stars = '★'.repeat(parseInt(rating)) + '☆'.repeat(5 - parseInt(rating));
+    const list = document.getElementById('reviewsList');
+    const fullDesc = desc.length > 120 ? desc.slice(0, 120) + ' <span onclick="this.parentElement.querySelector(\'.full-desc\').style.display=\'inline\';this.style.display=\'none\';" style="cursor:pointer;color:var(--teal);font-weight:600;">[Read More]</span><span class="full-desc" style="display:none;">' + desc.slice(120) + '</span>' : desc;
+    const item = document.createElement('article');
+    item.className = 'rev';
+    item.innerHTML = '<div class="rev__stars" role="img" aria-label="' + rating + ' out of 5"><span style="color:#fbbf24;font-size:1.1rem;letter-spacing:2px;">' + stars + '</span></div><h3 style="font-family:var(--font);font-size:1.06rem;font-weight:800;margin:0;">' + name + '</h3><p style="color:var(--muted);font-size:.95rem;flex:1;">' + fullDesc + '</p><footer style="display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--muted);padding-top:14px;border-top:1px solid var(--line);"><span>Source</span><i style="margin-left:auto;font-style:normal;">Appena inviato</i></footer>';
+    list.prepend(item);
+    document.getElementById('reviewForm').reset();
+  };
 
   /* ------------------------------------------------------------------ misc */
   const year = $('#year');

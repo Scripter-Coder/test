@@ -9,12 +9,152 @@
    ========================================================================== */
 
 const LANGS = {
+  it: { code: 'it', name: 'Italiano',  flag: 'it' },
   en: { code: 'en', name: 'English',  flag: 'en' },
   ru: { code: 'ru', name: 'Русский',  flag: 'ru' },
-  uk: { code: 'uk', name: 'Українська', flag: 'uk' }
+  uk: { code: 'uk', name: 'Українська', flag: 'uk' },
+  de: { code: 'de', name: 'Deutsch',  flag: 'de' },
+  fr: { code: 'fr', name: 'Français', flag: 'fr' },
+  es: { code: 'es', name: 'Español',  flag: 'es' }
 };
 
 const I18N = {
+
+/* ================================== ITALIAN ================================= */
+it: {
+  meta: {
+    title: 'Aurora Mini-Hotel — Appartamento giornaliero a Mondragone',
+    description: 'Appartamento giornaliero a Mondragone. Due camere separate, cucina, soggiorno, bagno e cortile privato per il tè.'
+  },
+  a11y: { skip: 'Salta al contenuto' },
+  brand: { name: 'AURORA', sub: 'mini-hotel' },
+  lang: { code: 'IT', switch: 'Cambia lingua' },
+  nav: { rooms: 'Camere', amenities: 'Servizi', offers: 'Offerte', reviews: 'Recensioni', contacts: 'Contatti' },
+  header: { phone1: '+39 379 140 9369', phone2: '' },
+
+  hero: {
+    badge: 'Appartamento giornaliero · Mondragone',
+    title: 'DAILY RENT APARTMENT IN MONDRAGON',
+    kicker: '',
+    i1: 'Centro città',
+    i2: 'Parcheggio',
+    i3: 'Appartamento con nuova ristrutturazione',
+    i4: 'Patio accogliente per barbecue',
+    i5: 'Due camere separate',
+    stat1: 'valutazione ospiti',
+    stat2: 'ospiti felici',
+    stat3: 'min al centro',
+    cardTitle: '',
+    cardText: '',
+    btnBook: '',
+    btnLearn: '',
+    meta1: 'Fermata bus 3 minuti',
+    meta2: '',
+    scroll: 'Scorri'
+  },
+
+  rooms: {
+    label: 'Alloggio',
+    title: 'Scegli la tua camera',
+    lead: 'Ogni appartamento è privato, appena pulito e pronto all\'arrivo.',
+    n1: 'Double 1', d1: 'Appartamento con due camere, tre letti, cucina, soggiorno, bagno e cortile privato per il tè. Lato tranquillo e soleggiato della casa — perfetto per un breve viaggio.',
+    area: '55 m²', guests: '2-7 ospiti', floor: '1° piano',
+    from: '', price: '', perNight: '', cta: 'Ottieni il prezzo'
+  },
+
+  am: {
+    label: 'Servizi',
+    title: 'Rendiamo confortevole il tuo soggiorno nella nostra città',
+    a1: '', a2: 'Parcheggio gratuito', a3: 'Pulizia', a4: 'Wi-Fi',
+    a5: '', a6: 'Acqua potabile', a7: 'Frigo & microonde', a8: 'Caffè & tè',
+    shower: 'Doccia', bed: 'Letto', wifi: 'Wi-Fi', safe: '', tv: '', ac: 'Aria condizionata', kettle: 'Bollitore', breakfast: 'Colazione', sofa: 'Soggiorno'
+  },
+
+  promo: {
+    title: 'Prenota per più di 2 notti',
+    sub: 'e risparmia il 10%',
+    sub2: 'del tuo soggiorno'
+  },
+
+  form: {
+    name: 'Il tuo nome',
+    phone: 'Il tuo telefono',
+    submit: 'Invia',
+    note: 'Ti chiameremo entro 15 minuti e non condivideremo mai il tuo numero.',
+    ok: 'Grazie! La tua richiesta è stata inviata — ti contatteremo a breve.'
+  },
+
+  tour: {
+    label: 'Video',
+    title: 'Dai un\'occhiata prima di arrivare',
+    lead: 'Un breve tour dell\'appartamento, delle camere e del cortile.',
+    hint: 'Video tour',
+    chip: 'Video tour · 0:35'
+  },
+
+  rv: {
+    label: 'Recensioni',
+    title: 'Cosa dicono i nostri ospiti',
+    src: 'Fonte',
+    r1n: '', r1: '', r1d: '',
+    r2n: '', r2: '', r2d: '',
+    r3n: '', r3: '', r3d: '',
+    r4n: '', r4: '', r4d: ''
+  },
+
+  of: {
+    label: 'Offerte',
+    title: 'Offerte speciali',
+    t1: '−15%', t2: '−25%', t3: '',
+    n1: 'Prenotazione anticipata', d1: 'Non lasciare per l\'ultimo momento. Prenota almeno 15 giorni prima dell\'arrivo e ottieni <b>il 15% di sconto</b> su tutto il soggiorno.',
+    n2: 'Tariffa notturna', d2: 'La scelta migliore quando hai bisogno solo di poche ore. <b>Condizioni: soggiorno dalle 22:00 alle 09:00.</b>',
+    n3: '', d3: '',
+    cta: 'Prenota questa offerta'
+  },
+
+  ct: {
+    label: 'Contatti',
+    title: 'Restiamo in contatto',
+    mapOpen: 'Apri in Google Maps',
+    phoneLbl: 'Telefono',
+    emailLbl: 'Email',
+    addrLbl: 'Indirizzo',
+    addr: 'Italia, Città Mondragone, Via S. Razzino, 20',
+    hoursLbl: '',
+    hours: '',
+    q: 'Hai ancora domande?',
+    q2: 'Ti risponderemo',
+    cta: 'Prenota una consulenza con i nostri specialisti'
+  },
+
+  ftr: {
+    title: '',
+    sub: '',
+    rights: 'Tutti i diritti riservati.',
+    made: 'Fatto con cura · ospitato su Cloudflare'
+  },
+
+  chat: { txt: 'Domande? Scrivici' },
+
+  m: {
+    title: 'Prenota una camera',
+    sub: 'Lascia i tuoi dati e il manager ti chiamerà a breve.',
+    btn: 'Ottieni il regalo',
+    vTitle: 'Video tour',
+    vSub: 'Il video verrà riprodotto qui.',
+    vBtn: 'Chiudi'
+  },
+
+  ph: {
+    hero: 'Sfondo principale · 1920×1280',
+    room1: 'Double 1 · foto', room2: 'Double 2 · foto', room3: 'Economy · foto', room4: 'Semi-deluxe · foto',
+    promo: 'Sfondo promozione · 1600×900',
+    badge: 'Premio · 600×600',
+    video: 'Video tour · 1920×1080',
+    map: 'Google Maps embed',
+    offer1: 'Offerta · 800×500', offer2: 'Offerta · 800×500', offer3: 'Offerta · 800×500'
+  }
+},
 
 /* ================================== ENGLISH ================================= */
 en: {
