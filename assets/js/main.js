@@ -248,6 +248,9 @@
     function markMissing(img) {
       img.classList.add('is-missing');
       img.setAttribute('aria-hidden', 'true');
+      // a <picture> wrapper must hide too, otherwise the broken art shows
+      const pic = img.closest('picture');
+      if (pic) pic.classList.add('is-missing');
     }
     function check(img) {
       if (!img || img.tagName !== 'IMG') return;

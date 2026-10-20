@@ -253,10 +253,13 @@ button{cursor:pointer;border:0;background:none}
 .hero__slides{position:absolute;inset:0}
 .hero__slide{
   position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;opacity:0;
-  transform:scale(1.06);
+  display:block;opacity:0;
+  transform:scale(1.02);
   transition:opacity 1.4s ease, transform 7s ease;
   will-change:opacity,transform;
+}
+.hero__slide>img{
+  width:100%;height:100%;object-fit:cover;display:block;
 }
 .hero__slide.is-active{opacity:1;transform:scale(1)}
 .hero__slide.is-missing{opacity:0}
@@ -267,10 +270,15 @@ button{cursor:pointer;border:0;background:none}
   display:flex;align-items:center;gap:9px;
 }
 .hero__dots button{
+  position:relative;
   width:9px;height:9px;padding:0;border-radius:50%;
   background:rgba(255,255,255,.42);box-shadow:0 0 0 1px rgba(4,17,22,.35);
   transition:width .35s var(--ease),background .35s;
   cursor:pointer;
+}
+/* expand the clickable area without changing the visual size */
+.hero__dots button::before{
+  content:"";position:absolute;inset:-12px;border-radius:50%;
 }
 .hero__dots button.is-active{width:26px;border-radius:999px;background:var(--teal)}
 
@@ -669,7 +677,12 @@ button{cursor:pointer;border:0;background:none}
 
 /* ============================================================= 10e. CONTACTS */
 .contacts__in{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,64px);align-items:center}
-.map{position:relative;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);aspect-ratio:4/3;min-height:340px}
+.contacts__in>*{min-width:0}
+.map{
+  position:relative;border-radius:var(--r-xl);overflow:hidden;
+  border:1px solid var(--line);box-shadow:var(--shadow);
+  width:100%;height:clamp(300px,42vw,460px);
+}
 .map .media{border:0;border-radius:0}
 .map__open{
   position:absolute;left:50%;bottom:22px;transform:translateX(-50%);
@@ -806,13 +819,15 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
   .nav-open .nav{opacity:1;visibility:visible;transform:none;transition:opacity .3s,transform .3s var(--ease),visibility 0s}
   .nav a{padding:15px 4px;font-size:1.02rem;border-bottom:1px solid var(--line)}
   .burger{display:flex}
-  .hdr__in{justify-content:space-between}
-  .brand{margin-right:auto}
+  .hdr__in{justify-content:space-between;gap:8px}
+  .brand{margin-right:auto;min-width:0}
+  .brand__txt{min-width:0}
+  .brand__name{font-size:1.05rem}
   .slider--reviews .slider__track>*{flex-basis:100%;--per:1}
   .badge{max-width:320px}
 }
 @media (max-width:640px){
-  :root{--pad:16px}
+  :root{--pad:16px;--hdr-h:64px}
   body{font-size:15px}
   .hdr__tel{display:none}
   .lang__cur{display:none}
@@ -828,6 +843,162 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
   .room__foot{flex-direction:column;align-items:stretch}
   .room__foot .btn{width:100%}
   .aw-stats{gap:20px}
+}
+
+/* ------------------------------------------------------------- MOBILE ONLY
+   Everything below only applies to phones / small tablets.            */
+@media (max-width:760px){
+  /* --- nothing may ever push the page sideways ------------------- */
+  html,body{max-width:100%;overflow-x:clip}
+  body{overflow-x:hidden}
+  .container{width:100%;max-width:100%}
+  section,.hero,.ftr,.promo,.contacts,.rooms,.reviews,.offers,.tour,.amenities{overflow-x:clip}
+  img,video,iframe{max-width:100%}
+
+  /* --- header: compact, nothing overflows ----------------------- */
+  .hdr__in{height:var(--hdr-h);gap:6px}
+  .brand__mark{width:36px;height:36px;border-radius:11px}
+  .brand__mark svg{width:20px;height:20px}
+  .brand__name{font-size:1rem;letter-spacing:.04em}
+  .brand__sub{font-size:.54rem;letter-spacing:.22em}
+  .icon-btn{width:38px;height:38px;border-radius:11px}
+  .icon-btn svg{width:19px;height:19px}
+  .lang__btn{height:38px;padding:0 8px;gap:6px}
+  .flag{width:19px;height:13px}
+  .hdr__right{gap:6px}
+
+  /* --- hero ------------------------------------------------------ */
+  .hero{min-height:auto;padding-block:calc(var(--hdr-h) + 26px) 92px}
+  /* portrait slides are pre-composed, so show them whole */
+  .hero__slide>img{object-fit:cover}
+  .hero__title{font-size:clamp(1.55rem,7.4vw,2.1rem);line-height:1.14;margin-bottom:8px}
+  .hero__subtitle{font-size:.95rem!important;letter-spacing:.08em!important;margin-bottom:16px!important}
+  .pills{font-size:.6rem;padding:6px 12px 6px 9px;margin-bottom:16px;max-width:100%;gap:7px;letter-spacing:.04em}
+  .pills i{width:6px;height:6px;box-shadow:0 0 0 3px rgba(20,184,166,.22)}
+  .pills span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hero__list{gap:8px;margin-bottom:22px}
+  .hero__list li{font-size:.92rem;padding-left:28px}
+  .hero__list li::before{width:17px;height:17px}
+  .hero__list li::after{top:calc(.42em + 5px);width:7px;height:4px}
+  .hero__stats{gap:14px;padding-top:18px}
+  .hero__stats b{font-size:1.35rem}
+  .hero__stats span{font-size:.66rem;letter-spacing:.07em}
+  .hero__card{padding:22px;border-radius:26px}
+  .hero__card h2{font-size:1.3rem}
+  .hero__card p{font-size:.9rem}
+  .hero__card .btn{padding:13px 18px;font-size:.9rem}
+  .hero__cardmeta li{font-size:.82rem}
+  .hero__scroll{bottom:14px;font-size:.62rem}
+  .hero__dots{bottom:56px;gap:4px}
+  .hero__dots button{width:9px;height:9px;box-shadow:0 0 0 4px rgba(4,17,22,.3)}
+  .hero__dots button::before{inset:-10px}
+  .hero__dots button.is-active{width:24px}
+
+  /* --- sections -------------------------------------------------- */
+  .section{padding-block:clamp(46px,11vw,72px)}
+  .sec-head{margin-bottom:clamp(24px,6vw,34px)}
+  .sec-head__label{font-size:.66rem;letter-spacing:.2em;margin-bottom:10px}
+  .sec-title{font-size:clamp(1.55rem,7.2vw,2rem)}
+  .sec-lead{font-size:.95rem;line-height:1.6}
+
+  /* --- rooms ----------------------------------------------------- */
+  .room{gap:20px}
+  .room__info h3{font-size:1.6rem}
+  .room__info>p{font-size:.94rem}
+  .room__meta{gap:8px;margin:16px 0}
+  .room__meta span{font-size:.78rem;padding:7px 11px}
+  .chips{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:7px;margin-bottom:20px}
+  .chips li{font-size:.76rem;padding:8px 10px}
+  .video-wrapper,.video--v{width:min(260px,100%)}
+  .video--v{max-height:min(52vh,440px)}
+  .video__frame{max-height:min(52vh,440px)}
+
+  /* --- amenities ------------------------------------------------- */
+  .am-grid{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+  .am{padding:18px 12px;gap:10px;border-radius:20px}
+  .am__ico{width:50px;height:50px;border-radius:16px}
+  .am__ico svg{width:24px;height:24px}
+  .am b{font-size:.84rem}
+
+  /* --- promo / forms --------------------------------------------- */
+  .promo{padding-block:clamp(36px,9vw,60px)}
+  .promo__card{padding:22px;border-radius:26px}
+  .promo__body h2{font-size:1.4rem}
+  .promo__sub{font-size:.95rem;margin-bottom:16px}
+  .lead-form{flex-direction:column}
+  .lead-form .field{flex:1 1 auto;width:100%}
+  .lead-form .btn{width:100%}
+  .field input,.field textarea{padding:20px 14px 9px}
+  .field label{top:15px}
+
+  /* --- video tour ------------------------------------------------ */
+  .video{border-radius:24px}
+  .video__chip{font-size:.68rem;padding:5px 11px}
+
+  /* --- reviews --------------------------------------------------- */
+  .rev-form{padding:18px;border-radius:20px}
+  .rev-form__grid{grid-template-columns:1fr;gap:10px}
+  .rev-form__submit{width:100%;justify-self:stretch}
+  .rev{padding:18px;border-radius:20px;gap:10px}
+  .rev h3{font-size:.98rem}
+  .rev p{font-size:.9rem}
+  .rev footer{font-size:.74rem;flex-wrap:wrap;gap:6px}
+
+  /* --- offers ---------------------------------------------------- */
+  .offers__grid{grid-template-columns:1fr;gap:14px}
+  .offer .media{aspect-ratio:16/9}
+  .offer__body{padding:18px;gap:8px}
+  .offer h3{font-size:1.2rem}
+  .offer p{font-size:.9rem}
+
+  /* --- contacts -------------------------------------------------- */
+  .contacts__in{gap:22px}
+  .map{height:clamp(240px,58vw,340px);border-radius:24px}
+  .map__open{padding:10px 16px;font-size:.82rem;bottom:14px}
+  .ct-list{gap:10px;margin:6px 0 20px}
+  .ct{padding:13px 14px;gap:12px;border-radius:18px}
+  .ct__ico{width:40px;height:40px;border-radius:12px}
+  .ct__ico svg{width:19px;height:19px}
+  .ct b{font-size:.9rem}
+  .ct i{font-size:.66rem}
+  .ct--addr{flex-wrap:wrap}
+  .ct__mapsq{width:76px;height:76px;margin:8px 0 0}
+  .ct-cta{padding:18px;border-radius:20px}
+  .ct-cta p:first-child{font-size:1rem}
+  .ct-cta .btn{width:100%}
+
+  /* --- footer ---------------------------------------------------- */
+  .ftr{padding-block:clamp(38px,9vw,60px) 22px}
+  .ftr__top{grid-template-columns:1fr;gap:22px;padding-bottom:24px}
+  .ftr__links{justify-self:start;flex-direction:row;flex-wrap:wrap;gap:12px 18px}
+  .ftr__links a{font-size:.88rem}
+  .ftr__bot{flex-direction:column;align-items:flex-start;gap:8px;font-size:.78rem}
+
+  /* --- floating UI: no overlaps on small screens ------------------ */
+  .chat{left:14px;bottom:14px;padding:10px}
+  .chat__ico{width:36px;height:36px}
+  .to-top{right:14px;bottom:14px;width:44px;height:44px}
+  .social-float{right:14px;bottom:66px;gap:9px}
+  .social-btn{width:44px;height:44px}
+  /* keep the page content clear of the floating buttons */
+  .ftr{padding-bottom:150px}
+  .contacts{padding-bottom:150px}
+  .modal{padding:12px}
+  .modal__box{max-height:92vh;border-radius:24px}
+  .modal__body{padding:20px}
+  .modal__body h2{font-size:1.35rem}
+}
+
+/* very small phones */
+@media (max-width:380px){
+  :root{--pad:12px}
+  .hero__title{font-size:1.42rem}
+  .brand__sub{display:none}
+  .brand__name{font-size:.92rem}
+  .am-grid{grid-template-columns:repeat(auto-fit,minmax(124px,1fr))}
+  .hero__stats{gap:12px}
+  .hero__stats b{font-size:1.2rem}
+  .hero__stats span{font-size:.6rem}
 }
 
 .social-float{
