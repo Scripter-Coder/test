@@ -30,11 +30,19 @@
   /* ------------------------------------------------------------- language */
   const SUPPORTED = Object.keys(I18N);
   let current = (() => {
-    const saved = localStorage.getItem('aurora_lang');
-    if (saved && SUPPORTED.indexOf(saved) !== -1) return saved;
+    // read the new key first, fall back to the legacy one
+    const saved = localStorage.getItem('aurora_lang') || localStorage.getItem('aurora:lang');
+    if (saved && SUPPORTED.indexOf(saved) !== -1) {
+      localStorage.setItem('aurora_lang', saved);
+      return saved;
+    }
     localStorage.removeItem('aurora:lang');
     return 'it';
   })();
+
+  const LANG_CODES = {
+    it: 'IT', en: 'EN', de: 'DE', fr: 'FR', es: 'ES', ru: 'RU', uk: 'UA'
+  };
 
   const FLAGS = {
     it: '<svg viewBox="0 0 24 16" aria-hidden="true"><rect width="24" height="16" fill="#009246"/><rect x="8" width="8" height="16" fill="#F1F2F1"/><rect x="16" width="8" height="16" fill="#CE2B37"/></svg>',
@@ -105,18 +113,25 @@
     });
     const langBtn = $('.lang__btn');
     if (langBtn) {
-      const code = t('lang.code');
+      // derive the code from the ACTIVE language, never from a translated
+      // string - otherwise a stale cached i18n file can show the wrong code
+      const code = LANG_CODES[current] || current.toUpperCase();
       const label = t('lang.switch');
       // accessible name must contain the visible code text
       langBtn.setAttribute('aria-label', label ? label + ': ' + code : code);
+      // the visible code chip
+      const cur = $('.lang__cur');
+      if (cur) cur.textContent = code;
     }
 
     paintFlags();
   }
 
   function setLang(code) {
-    if (!I18N[code]) return;
+    if (!I18N[code] || code === current) return;
+    // write BOTH keys so a stale cached script and a fresh one always agree
     localStorage.setItem('aurora_lang', code);
+    localStorage.setItem('aurora:lang', code);
     document.documentElement.setAttribute('lang', code);
     current = code;
     applyI18n();

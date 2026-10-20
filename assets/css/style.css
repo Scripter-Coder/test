@@ -245,72 +245,79 @@ button{cursor:pointer;border:0;background:none}
 .hdr__progress{position:absolute;left:0;right:0;bottom:-1px;height:2px;background:transparent}
 .hdr__progress i{display:block;height:100%;background:var(--grad);transform:scaleX(0);transform-origin:left}
 
-/* ================================================================= 6. HERO */
-.hero{position:relative;min-height:clamp(620px,86vh,900px);display:flex;align-items:center;padding-block:clamp(60px,9vw,120px) clamp(90px,10vw,150px);overflow:hidden}
-.hero__bg{position:absolute;inset:0;z-index:0;background:var(--ph-base);overflow:hidden}
-
-/* ---- hero slideshow: 8 images, 5s each, smooth cross-fade ---- */
-.hero__slides{position:absolute;inset:0}
-.hero__slide{
-  position:absolute;inset:0;width:100%;height:100%;
-  display:block;opacity:0;
-  transform:scale(1.02);
-  transition:opacity 1.4s ease, transform 7s ease;
-  will-change:opacity,transform;
-}
-.hero__slide>img{
-  width:100%;height:100%;object-fit:cover;display:block;
-}
-.hero__slide.is-active{opacity:1;transform:scale(1)}
-.hero__slide.is-missing{opacity:0}
-
-/* dots */
-.hero__dots{
-  position:absolute;left:50%;bottom:96px;transform:translateX(-50%);z-index:3;
-  display:flex;align-items:center;gap:9px;
-}
-.hero__dots button{
-  position:relative;
-  width:9px;height:9px;padding:0;border-radius:50%;
-  background:rgba(255,255,255,.42);box-shadow:0 0 0 1px rgba(4,17,22,.35);
-  transition:width .35s var(--ease),background .35s;
-  cursor:pointer;
-}
-/* expand the clickable area without changing the visual size */
-.hero__dots button::before{
-  content:"";position:absolute;inset:-12px;border-radius:50%;
-}
-.hero__dots button.is-active{width:26px;border-radius:999px;background:var(--teal)}
-
-/* lighter veil so the photo stays clearly visible */
-.hero__veil{
-  position:absolute;inset:0;
+/* ================================================================= 6. HERO
+   Layout:  1. headline  ->  2. photo frame  ->  3. details
+   The photo frame uses exactly the same aspect ratio as the source
+   images, so `object-fit:cover` never zooms or crops anything.        */
+.hero{
+  position:relative;overflow:hidden;
+  padding-block:clamp(40px,6vw,72px) clamp(70px,9vw,110px);
   background:
-    linear-gradient(180deg,rgba(4,17,22,.72) 0%,rgba(4,17,22,.30) 38%,rgba(4,17,22,.72) 100%),
-    linear-gradient(100deg,rgba(4,17,22,.72) 0%,rgba(4,17,22,.08) 58%,rgba(4,17,22,.30) 100%);
+    radial-gradient(120% 90% at 18% 0%,rgba(20,184,166,.13),transparent 62%),
+    radial-gradient(100% 80% at 88% 10%,rgba(14,165,233,.11),transparent 60%);
 }
-[data-theme="light"] .hero__veil{
-  background:
-    linear-gradient(180deg,rgba(8,36,48,.62) 0%,rgba(8,36,48,.22) 38%,rgba(8,36,48,.66) 100%),
-    linear-gradient(100deg,rgba(8,36,48,.62) 0%,rgba(8,36,48,.06) 58%,rgba(8,36,48,.26) 100%);
-}
-.hero__in{position:relative;z-index:2;display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(28px,4vw,60px);align-items:center}
+.hero__in{position:relative;z-index:2;display:flex;flex-direction:column;gap:clamp(26px,3.4vw,44px)}
+
+/* ---------- 1. headline ---------- */
+.hero__head{display:flex;flex-direction:column;align-items:flex-start;gap:0}
 
 .pills{
   display:inline-flex;align-items:center;gap:9px;padding:7px 16px 7px 12px;border-radius:var(--r-pill);
   background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(12px);
   font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-soft);
-  margin-bottom:22px;
+  margin-bottom:18px;max-width:100%;
 }
-.pills i{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(20,184,166,.22);animation:pulse 2.2s infinite}
+.pills i{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px rgba(20,184,166,.22);animation:pulse 2.2s infinite;flex:0 0 auto}
+.pills span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 3px rgba(20,184,166,.3)}50%{box-shadow:0 0 0 8px rgba(20,184,166,0)}}
 
-.hero__title{font-size:clamp(2.5rem,5.6vw,4.4rem);margin-bottom:12px;text-wrap:balance}
+.hero__title{
+  font-size:clamp(2.1rem,5.2vw,4.2rem);margin-bottom:10px;text-wrap:balance;line-height:1.06;
+  max-width:20ch;
+}
 .hero__sub{
   font-size:clamp(.95rem,1.5vw,1.15rem);letter-spacing:.24em;text-transform:uppercase;
-  color:var(--teal);font-weight:700;margin-bottom:26px;
+  color:var(--teal);font-weight:700;margin-bottom:0;
 }
-.hero__list{display:grid;gap:11px;margin-bottom:30px}
+.hero__subtitle{font-family:var(--display);letter-spacing:.14em;font-size:clamp(.95rem,1.6vw,1.2rem)}
+
+/* ---------- 2. photo frame ----------
+   The frame keeps the EXACT ratio of the source images, so `object-fit:cover`
+   never crops and never zooms. Width is capped (not height) so the ratio
+   is preserved at every screen size.                                    */
+.hero__media{position:relative;width:100%;display:flex;justify-content:center}
+.hero__slides{
+  position:relative;width:min(100%,1080px);aspect-ratio:16/9;
+  border-radius:var(--r-xl);overflow:hidden;
+  background:var(--ph-base);border:1px solid var(--line);box-shadow:var(--shadow);
+}
+.hero__slide{
+  position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;
+  transform:scale(1.01);
+  transition:opacity 1.4s ease, transform 7s ease;
+  will-change:opacity,transform;
+}
+.hero__slide>img{width:100%;height:100%;object-fit:cover;display:block}
+.hero__slide.is-active{opacity:1;transform:scale(1)}
+.hero__slide.is-missing{opacity:0}
+
+/* dots */
+.hero__dots{
+  position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:3;
+  display:flex;align-items:center;gap:9px;
+}
+.hero__dots button{
+  position:relative;width:9px;height:9px;padding:0;border-radius:50%;
+  background:rgba(255,255,255,.45);box-shadow:0 0 0 1px rgba(4,17,22,.35);
+  transition:width .35s var(--ease),background .35s;cursor:pointer;
+}
+.hero__dots button::before{content:"";position:absolute;inset:-12px;border-radius:50%}
+.hero__dots button.is-active{width:26px;border-radius:999px;background:var(--teal)}
+
+/* ---------- 3. details ---------- */
+.hero__details{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(24px,3.4vw,48px);align-items:start}
+
+.hero__list{display:grid;gap:11px;margin-bottom:26px}
 .hero__list li{position:relative;padding-left:34px;color:var(--text-soft);font-size:1.02rem}
 .hero__list li::before{
   content:"";position:absolute;left:0;top:.42em;width:20px;height:20px;border-radius:50%;
@@ -320,7 +327,7 @@ button{cursor:pointer;border:0;background:none}
   content:"";position:absolute;left:6px;top:calc(.42em + 6px);width:8px;height:4.5px;
   border-left:2px solid var(--teal);border-bottom:2px solid var(--teal);transform:rotate(-45deg);
 }
-.hero__stats{display:flex;gap:clamp(18px,3vw,40px);flex-wrap:wrap;padding-top:26px;border-top:1px solid var(--line)}
+.hero__stats{display:flex;gap:clamp(18px,3vw,40px);flex-wrap:wrap;padding-top:24px;border-top:1px solid var(--line)}
 .hero__stats div{display:flex;flex-direction:column}
 .hero__stats b{font-family:var(--display);font-size:clamp(1.5rem,2.6vw,2.1rem);color:var(--teal);line-height:1.1}
 .hero__stats span{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -339,7 +346,7 @@ button{cursor:pointer;border:0;background:none}
 .hero__cardmeta svg{width:19px;height:19px;color:var(--teal);flex:0 0 auto}
 
 .hero__scroll{
-  position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:2;
+  position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:2;
   display:flex;flex-direction:column;align-items:center;gap:6px;
   font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);
 }
@@ -798,7 +805,7 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
 }
 @media (max-width:1040px){
   :root{--hdr-h:72px}
-  .hero__in{grid-template-columns:1fr;gap:34px}
+  .hero__details{grid-template-columns:1fr;gap:30px}
   .hero__card{max-width:520px}
   .room,.awards__in,.contacts__in,.ftr__top{grid-template-columns:1fr}
   .room__info{order:-1}
@@ -829,9 +836,11 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
 @media (max-width:640px){
   :root{--pad:16px;--hdr-h:64px}
   body{font-size:15px}
-  .hdr__tel{display:none}
+  /* keep the phone reachable on phones - icon only, never hidden */
+  .hdr__tel{padding:0;width:38px;height:38px;justify-content:center;border-radius:11px;flex:0 0 auto}
+  .hdr__tel svg{width:18px;height:18px}
   .lang__cur{display:none}
-  .lang__btn{padding:0 10px}
+  .lang__btn{padding:0 9px}
   .tabs__bar{border-radius:var(--r);grid-auto-flow:row;grid-auto-columns:auto}
   .tab.is-active{transform:none}
   .hero__stats{gap:20px}
@@ -868,28 +877,30 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
   .hdr__right{gap:6px}
 
   /* --- hero ------------------------------------------------------ */
-  .hero{min-height:auto;padding-block:calc(var(--hdr-h) + 26px) 92px}
-  /* portrait slides are pre-composed, so show them whole */
-  .hero__slide>img{object-fit:cover}
-  .hero__title{font-size:clamp(1.55rem,7.4vw,2.1rem);line-height:1.14;margin-bottom:8px}
-  .hero__subtitle{font-size:.95rem!important;letter-spacing:.08em!important;margin-bottom:16px!important}
-  .pills{font-size:.6rem;padding:6px 12px 6px 9px;margin-bottom:16px;max-width:100%;gap:7px;letter-spacing:.04em}
+  .hero{padding-block:26px 78px}
+  .hero__in{gap:22px}
+  .hero__title{font-size:clamp(1.5rem,7vw,2rem);line-height:1.12;margin-bottom:6px;max-width:none}
+  .hero__subtitle{font-size:.9rem!important;letter-spacing:.06em!important}
+  .pills{font-size:.58rem;padding:6px 11px 6px 9px;margin-bottom:12px;max-width:100%;gap:7px;letter-spacing:.03em}
   .pills i{width:6px;height:6px;box-shadow:0 0 0 3px rgba(20,184,166,.22)}
   .pills span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .hero__list{gap:8px;margin-bottom:22px}
-  .hero__list li{font-size:.92rem;padding-left:28px}
+  /* the phone frame uses the 3:4 portrait slides -> exact fit, no crop */
+  .hero__slides{aspect-ratio:3/4;width:min(100%,430px);border-radius:22px}
+  .hero__media{margin-inline:-2px}
+  .hero__list{gap:8px;margin-bottom:20px}
+  .hero__list li{font-size:.9rem;padding-left:28px}
   .hero__list li::before{width:17px;height:17px}
   .hero__list li::after{top:calc(.42em + 5px);width:7px;height:4px}
-  .hero__stats{gap:14px;padding-top:18px}
-  .hero__stats b{font-size:1.35rem}
-  .hero__stats span{font-size:.66rem;letter-spacing:.07em}
-  .hero__card{padding:22px;border-radius:26px}
-  .hero__card h2{font-size:1.3rem}
-  .hero__card p{font-size:.9rem}
+  .hero__stats{gap:14px;padding-top:16px}
+  .hero__stats b{font-size:1.3rem}
+  .hero__stats span{font-size:.64rem;letter-spacing:.06em}
+  .hero__card{padding:20px;border-radius:24px}
+  .hero__card h2{font-size:1.25rem}
+  .hero__card p{font-size:.88rem}
   .hero__card .btn{padding:13px 18px;font-size:.9rem}
-  .hero__cardmeta li{font-size:.82rem}
-  .hero__scroll{bottom:14px;font-size:.62rem}
-  .hero__dots{bottom:56px;gap:4px}
+  .hero__cardmeta li{font-size:.8rem}
+  .hero__scroll{bottom:12px;font-size:.6rem}
+  .hero__dots{bottom:14px;gap:4px}
   .hero__dots button{width:9px;height:9px;box-shadow:0 0 0 4px rgba(4,17,22,.3)}
   .hero__dots button::before{inset:-10px}
   .hero__dots button.is-active{width:24px}
@@ -992,7 +1003,8 @@ a.ct:hover{border-color:var(--teal);transform:translateX(4px);background:var(--s
 /* very small phones */
 @media (max-width:380px){
   :root{--pad:12px}
-  .hero__title{font-size:1.42rem}
+  .hero__title{font-size:1.38rem}
+  .hero__slides{width:min(100%,370px)}
   .brand__sub{display:none}
   .brand__name{font-size:.92rem}
   .am-grid{grid-template-columns:repeat(auto-fit,minmax(124px,1fr))}

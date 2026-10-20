@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=20261020c">
 
 <script>
 /* Set theme + language before first paint (no flash of wrong theme) */
@@ -30,9 +30,10 @@
     var t = localStorage.getItem('aurora:theme');
     if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', t);
-    var l = localStorage.getItem('aurora_lang');
+    // read both keys so an old cached script and a new one always agree
+    var l = localStorage.getItem('aurora_lang') || localStorage.getItem('aurora:lang');
     if (!l) l = 'it';
-    if (l) document.documentElement.setAttribute('lang', l);
+    document.documentElement.setAttribute('lang', l);
   } catch (e) {}
 })();
 </script>
@@ -105,79 +106,87 @@
 
   <!-- ============================== HERO ============================== -->
   <section class="hero">
-    <div class="hero__bg" aria-hidden="true">
-      <div class="hero__slides" data-hero-slides>
-        <picture class="hero__slide is-active">
-          <source media="(max-width:760px)" srcset="assets/img/hero/slide-1-m.jpg">
-          <img src="assets/img/hero/slide-1.jpg" alt="" loading="eager">
-        </picture>
-        <picture class="hero__slide">
-          <source media="(max-width:760px)" srcset="assets/img/hero/slide-2-m.jpg">
-          <img src="assets/img/hero/slide-2.jpg" alt="" loading="lazy">
-        </picture>
-        <picture class="hero__slide">
-          <source media="(max-width:760px)" srcset="assets/img/hero/slide-3-m.jpg">
-          <img src="assets/img/hero/slide-3.jpg" alt="" loading="lazy">
-        </picture>
-        <picture class="hero__slide">
-          <source media="(max-width:760px)" srcset="assets/img/hero/slide-4-m.jpg">
-          <img src="assets/img/hero/slide-4.jpg" alt="" loading="lazy">
-        </picture>
-        <picture class="hero__slide">
-          <source media="(max-width:760px)" srcset="assets/img/hero/slide-5-m.jpg">
-          <img src="assets/img/hero/slide-5.jpg" alt="" loading="lazy">
-        </picture>
-        <picture class="hero__slide">
-          <source media="(max-width:760px)" srcset="assets/img/hero/slide-6-m.jpg">
-          <img src="assets/img/hero/slide-6.jpg" alt="" loading="lazy">
-        </picture>
-        <picture class="hero__slide">
-          <source media="(max-width:760px)" srcset="assets/img/hero/slide-7-m.jpg">
-          <img src="assets/img/hero/slide-7.jpg" alt="" loading="lazy">
-        </picture>
-        <picture class="hero__slide">
-          <source media="(max-width:760px)" srcset="assets/img/hero/slide-8-m.jpg">
-          <img src="assets/img/hero/slide-8.jpg" alt="" loading="lazy">
-        </picture>
-      </div>
-      <div class="hero__veil"></div>
-      <div class="hero__dots" data-hero-dots></div>
-    </div>
-
     <div class="container hero__in">
-      <div class="hero__left">
+
+      <!-- 1. the headline comes first -->
+      <div class="hero__head">
         <span class="pills"><i></i><span data-i18n="hero.badge">Appartamento giornaliero &middot; Citt&agrave; Mondragone</span></span>
-        <h1 class="hero__title" data-i18n="hero.title">APPARTAMENTO GIORNALIERO IN MONDRAGONE</h1>
+        <h1 class="hero__title" data-i18n="hero.title">DAILY RENT APARTMENT IN MONDRAGON</h1>
         <p class="hero__sub hero__subtitle" data-i18n="hero.kicker">Aurora &middot; Citt&agrave; Mondragone</p>
-        <ul class="hero__list">
-          <li data-i18n="hero.i1">Centro citt&agrave;</li>
-          <li data-i18n="hero.i2">Parcheggio</li>
-          <li data-i18n="hero.i3">Appartamento con nuova ristrutturazione</li>
-          <li data-i18n="hero.i4">Patio accogliente per barbecue</li>
-          <li data-i18n="hero.i5">Due camere separate</li>
-        </ul>
-        <div class="hero__stats">
-          <div><b data-count="4.8" data-dec="1">0</b><span data-i18n="hero.stat1">valutazione ospiti</span></div>
-          <div><b data-count="1200" data-suffix="+">0</b><span data-i18n="hero.stat2">ospiti felici</span></div>
-          <div><b data-i18n="hero.stat3val">3 min</b><span data-i18n="hero.stat3">Fermata bus 3 minuti</span></div>
-        </div>
       </div>
 
-      <aside class="hero__card">
-        <div class="hero__cardglow" aria-hidden="true"></div>
-        <h2 data-i18n="hero.cardTitle">Contatti</h2>
-        <p data-i18n="hero.cardText">Scrivici o chiamaci: ti rispondiamo entro 15 minuti.</p>
-        <button class="btn btn--primary" type="button" data-open-modal="hero" data-i18n="hero.btnBook">Ottieni il prezzo</button>
-        <button class="btn btn--ghost" type="button" data-open-modal="learn" data-i18n="hero.btnLearn">Scopri di pi&ugrave;</button>
-        <ul class="hero__cardmeta">
-          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.1 7-11a7 7 0 10-14 0c0 5.9 7 11 7 11z" fill="currentColor"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="var(--bg-2)" stroke-width="1.8"/></svg><span data-i18n="hero.meta1">Fermata bus a 3 minuti</span></li>
-        </ul>
-      </aside>
+      <!-- 2. then the photos, in a properly sized frame -->
+      <div class="hero__media">
+        <div class="hero__slides" data-hero-slides>
+          <picture class="hero__slide is-active">
+            <source media="(max-width:760px)" srcset="assets/img/hero/slide-1-m.jpg">
+            <img src="assets/img/hero/slide-1.jpg" alt="" loading="eager">
+          </picture>
+          <picture class="hero__slide">
+            <source media="(max-width:760px)" srcset="assets/img/hero/slide-2-m.jpg">
+            <img src="assets/img/hero/slide-2.jpg" alt="" loading="lazy">
+          </picture>
+          <picture class="hero__slide">
+            <source media="(max-width:760px)" srcset="assets/img/hero/slide-3-m.jpg">
+            <img src="assets/img/hero/slide-3.jpg" alt="" loading="lazy">
+          </picture>
+          <picture class="hero__slide">
+            <source media="(max-width:760px)" srcset="assets/img/hero/slide-4-m.jpg">
+            <img src="assets/img/hero/slide-4.jpg" alt="" loading="lazy">
+          </picture>
+          <picture class="hero__slide">
+            <source media="(max-width:760px)" srcset="assets/img/hero/slide-5-m.jpg">
+            <img src="assets/img/hero/slide-5.jpg" alt="" loading="lazy">
+          </picture>
+          <picture class="hero__slide">
+            <source media="(max-width:760px)" srcset="assets/img/hero/slide-6-m.jpg">
+            <img src="assets/img/hero/slide-6.jpg" alt="" loading="lazy">
+          </picture>
+          <picture class="hero__slide">
+            <source media="(max-width:760px)" srcset="assets/img/hero/slide-7-m.jpg">
+            <img src="assets/img/hero/slide-7.jpg" alt="" loading="lazy">
+          </picture>
+          <picture class="hero__slide">
+            <source media="(max-width:760px)" srcset="assets/img/hero/slide-8-m.jpg">
+            <img src="assets/img/hero/slide-8.jpg" alt="" loading="lazy">
+          </picture>
+        </div>
+        <div class="hero__dots" data-hero-dots></div>
+      </div>
+
+      <!-- 3. the details -->
+      <div class="hero__details">
+        <div class="hero__left">
+          <ul class="hero__list">
+            <li data-i18n="hero.i1">City center</li>
+            <li data-i18n="hero.i2">Parking</li>
+            <li data-i18n="hero.i3">Apartment with new renovation</li>
+            <li data-i18n="hero.i4">Cozy patio for barbecue</li>
+            <li data-i18n="hero.i5">Two separate bedrooms</li>
+          </ul>
+          <div class="hero__stats">
+            <div><b data-count="4.8" data-dec="1">0</b><span data-i18n="hero.stat1">guest rating</span></div>
+            <div><b data-count="1200" data-suffix="+">0</b><span data-i18n="hero.stat2">happy guests</span></div>
+            <div><b data-i18n="hero.stat3val">3 min</b><span data-i18n="hero.stat3">Bus stop 3 minutes</span></div>
+          </div>
+        </div>
+
+        <aside class="hero__card">
+          <div class="hero__cardglow" aria-hidden="true"></div>
+          <h2 data-i18n="hero.cardTitle">Contact us</h2>
+          <p data-i18n="hero.cardText">Write or call us &mdash; we reply within 15 minutes.</p>
+          <button class="btn btn--primary" type="button" data-open-modal="hero" data-i18n="hero.btnBook">Get the price</button>
+          <button class="btn btn--ghost" type="button" data-open-modal="learn" data-i18n="hero.btnLearn">Find out more</button>
+          <ul class="hero__cardmeta">
+            <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-5.1 7-11a7 7 0 10-14 0c0 5.9 7 11 7 11z" fill="currentColor"/><circle cx="12" cy="10" r="2.6" fill="none" stroke="var(--bg-2)" stroke-width="1.8"/></svg><span data-i18n="hero.meta1">Bus stop 3 minutes</span></li>
+          </ul>
+        </aside>
+      </div>
     </div>
 
     <a class="hero__scroll" href="#rooms">
-      <span data-i18n="hero.scroll">Scorri</span>
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m0 0l-6-6m6 6l6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-i18n="hero.scroll">Scroll</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m0 0l-6-6m6-6l6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
   </section>
 
@@ -504,7 +513,7 @@
   </div>
 </div>
 
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="assets/js/i18n.js?v=20261020c"></script>
+<script src="assets/js/main.js?v=20261020c"></script>
 </body>
 </html>
